@@ -66,7 +66,7 @@ const multiImprovement = prevChip?.benchmarks.geekbench6MultiCore && chip.benchm
         <span style="color: var(--color-text);">{chip.name}</span>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: start;">
+      <div style="display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: start;" transition:name={`chip-card-${chip.slug}`}>
         <!-- タイトル部 -->
         <div class="reveal">
           <!-- シリーズバッジ -->

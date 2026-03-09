@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ChartSection from '../components/compare/ChartSection.tsx';
 import type { ChipSpec } from '../types/chip';
 import chipsData from '../data/chips.json';
 
@@ -141,6 +142,17 @@ const aChips = chips.filter(c => c.series === 'a');
       <p style="font-size: 12px; color: var(--color-text-secondary); margin-top: 12px;">
         ※ GB6 = Geekbench 6。ベンチマーク値は参考値です。
       </p>
+    </div>
+  </section>
+
+  <!-- ベンチマークグラフ -->
+  <section class="section-padding">
+    <div class="container-max">
+      <ChartSection
+        client:visible
+        chips={aChips}
+        title="ベンチマークグラフ"
+      />
     </div>
   </section>
 

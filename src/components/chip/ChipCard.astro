@@ -29,6 +29,7 @@ const seriesLabel = chip.series === 'm' ? 'Mac' : 'iPhone/iPad';
     overflow: hidden;
     --chip-color: ${chip.color};
   `}
+  transition:name={`chip-card-${chip.slug}`}
 >
   <!-- グロウ背景 -->
   <div style={`

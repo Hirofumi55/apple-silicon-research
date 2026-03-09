@@ -137,29 +137,46 @@ const currentPath = Astro.url.pathname;
 </style>
 
 <script>
-  // スクロール時のヘッダー背景変更
+  // スクロール時のヘッダー背景変更（ダーク/ライトモード対応）
   const headerInner = document.getElementById('header-inner');
 
+  const getScrolledBg = () => {
+    const isLight = document.documentElement.classList.contains('light');
+    return isLight ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.82)';
+  };
+
   const updateHeader = () => {
+    if (!headerInner) return;
     if (window.scrollY > 20) {
-      headerInner!.style.background = 'rgba(0, 0, 0, 0.8)';
-      headerInner!.style.backdropFilter = 'blur(20px)';
-      headerInner!.style.borderBottomColor = 'var(--color-border)';
+      headerInner.style.background = getScrolledBg();
+      headerInner.style.backdropFilter = 'blur(20px)';
+      headerInner.style.webkitBackdropFilter = 'blur(20px)';
+      headerInner.style.borderBottomColor = 'var(--color-border)';
     } else {
-      headerInner!.style.background = 'rgba(0, 0, 0, 0.01)';
-      headerInner!.style.backdropFilter = 'none';
-      headerInner!.style.borderBottomColor = 'transparent';
+      headerInner.style.background = 'transparent';
+      headerInner.style.backdropFilter = 'none';
+      headerInner.style.webkitBackdropFilter = 'none';
+      headerInner.style.borderBottomColor = 'transparent';
     }
   };
 
   window.addEventListener('scroll', updateHeader, { passive: true });
 
+  // テーマ変更時にも再適用
+  const observer = new MutationObserver(updateHeader);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+  // 初期適用
+  updateHeader();
+
   // モバイルメニュー
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
+  let menuOpen = false;
 
   mobileMenuBtn?.addEventListener('click', () => {
-    const isOpen = mobileMenu!.style.display === 'block';
-    mobileMenu!.style.display = isOpen ? 'none' : 'block';
+    menuOpen = !menuOpen;
+    mobileMenu!.style.display = menuOpen ? 'block' : 'none';
+    mobileMenuBtn.setAttribute('aria-expanded', String(menuOpen));
   });
 </script>

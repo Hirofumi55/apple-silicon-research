@@ -224,3 +224,122 @@ body {
   opacity: 0;
   transform: translateY(40px);
 }
+
+/* ============================================
+   横スクロールヒント（モバイル）
+   ============================================ */
+
+.scroll-table-wrapper {
+  position: relative;
+}
+
+@media (max-width: 640px) {
+  .scroll-table-wrapper::after {
+    content: '← スワイプで横スクロール →';
+    display: block;
+    text-align: center;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    padding: 8px;
+    opacity: 0.7;
+  }
+}
+
+/* ============================================
+   モバイルレスポンシブ
+   ============================================ */
+
+@media (max-width: 640px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  /* グリッドをモバイルで1カラムに */
+  .grid-responsive {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 詳細ページの2カラムグリッド */
+  .detail-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ============================================
+   ライトモード追加調整
+   ============================================ */
+
+.light body {
+  background: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
+}
+
+.light .glass {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.light .chip-card:hover {
+  box-shadow: 0 8px 40px -8px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   View Transition アニメーション
+   ============================================ */
+
+@keyframes slide-in-right {
+  from { transform: translateX(12px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-out-left {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(-12px); opacity: 0; }
+}
+
+::view-transition-old(root) {
+  animation: slide-out-left 0.2s ease forwards;
+}
+
+::view-transition-new(root) {
+  animation: slide-in-right 0.25s ease forwards;
+}
+
+/* チップカードの共有要素トランジション */
+::view-transition-old(chip-card-*) {
+  animation: none;
+}
+
+::view-transition-new(chip-card-*) {
+  animation: none;
+}
+
+/* ============================================
+   フォーカス可視化（アクセシビリティ）
+   ============================================ */
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ============================================
+   印刷スタイル
+   ============================================ */
+
+@media print {
+  header, footer, .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+}
