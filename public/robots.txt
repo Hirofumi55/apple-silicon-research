@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://apple-silicon-research.pages.dev/sitemap-index.xml

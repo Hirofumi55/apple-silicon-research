@@ -1,0 +1,39 @@
+{
+  "name": "Apple Silicon Lab - チップ性能完全比較",
+  "short_name": "Silicon Lab",
+  "description": "Apple M1〜M5 / A15〜A19チップの性能・ベンチマーク完全比較サイト",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#0071e3",
+  "lang": "ja",
+  "orientation": "portrait-primary",
+  "categories": ["productivity", "reference"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Mシリーズ比較",
+      "short_name": "Mシリーズ",
+      "url": "/m-series",
+      "description": "M1〜M5の全チップスペック比較"
+    },
+    {
+      "name": "チップ比較ツール",
+      "short_name": "比較",
+      "url": "/compare",
+      "description": "最大3チップのインタラクティブ比較"
+    }
+  ]
+}

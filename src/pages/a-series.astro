@@ -1,0 +1,262 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { ChipSpec } from '../types/chip';
+import chipsData from '../data/chips.json';
+
+const chips = chipsData as ChipSpec[];
+const aChips = chips.filter(c => c.series === 'a');
+---
+
+<BaseLayout
+  title="Aシリーズ比較"
+  description="Apple A15〜A19 ProまでiPhone/iPad向けAシリーズチップのスペック・ベンチマーク完全比較。CPU/GPU/Neural Engineコア数、AnTuTuスコアを一覧で確認。"
+>
+  <!-- ページヘッダー -->
+  <section style="
+    padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 48px) 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  ">
+    <div class="reveal">
+      <div style="
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
+      ">
+        <a href="/" style="font-size: 13px; color: var(--color-text-secondary); text-decoration: none;">ホーム</a>
+        <span style="color: var(--color-text-secondary);">/</span>
+        <span style="font-size: 13px; color: var(--color-text);">Aシリーズ</span>
+      </div>
+      <h1 style="
+        font-size: clamp(32px, 6vw, 64px);
+        font-weight: 800;
+        color: var(--color-text);
+        letter-spacing: -2px;
+        margin-bottom: 16px;
+        line-height: 1.1;
+      ">
+        Aシリーズ<br>
+        <span style="background: linear-gradient(135deg, #BB8FCE, #87CEEB); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">完全比較</span>
+      </h1>
+      <p style="font-size: 16px; color: var(--color-text-secondary); max-width: 600px; line-height: 1.7;">
+        A15 Bionic（2021）からA19 Pro（2025）まで、iPhone/iPad向け全チップを徹底比較。
+        3nmプロセスでのAI性能革命を追う。
+      </p>
+    </div>
+  </section>
+
+  <!-- スペック比較テーブル -->
+  <section class="section-padding">
+    <div class="container-max">
+      <h2 style="font-size: 22px; font-weight: 700; color: var(--color-text); margin-bottom: 32px; letter-spacing: -0.5px;" class="reveal">
+        全スペック比較テーブル
+      </h2>
+
+      <div class="scroll-table-wrapper reveal" style="border-radius: 16px; border: 1px solid var(--color-border); overflow: hidden;">
+        <table style="
+          width: 100%;
+          border-collapse: collapse;
+          min-width: 900px;
+          font-size: 13px;
+        ">
+          <thead>
+            <tr style="background: var(--color-surface);">
+              <th style="
+                text-align: left;
+                padding: 16px 20px;
+                font-size: 11px;
+                font-weight: 600;
+                color: var(--color-text-secondary);
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                border-bottom: 1px solid var(--color-border);
+                position: sticky;
+                left: 0;
+                background: var(--color-surface);
+                min-width: 160px;
+                z-index: 1;
+              ">チップ</th>
+              <th style="padding: 16px 16px; text-align: center; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--color-border);">プロセス</th>
+              <th style="padding: 16px 16px; text-align: center; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--color-border);">CPU</th>
+              <th style="padding: 16px 16px; text-align: center; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--color-border);">GPU</th>
+              <th style="padding: 16px 16px; text-align: center; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--color-border);">Neural Engine</th>
+              <th style="padding: 16px 16px; text-align: center; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--color-border);">RAM上限</th>
+              <th style="padding: 16px 16px; text-align: center; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--color-border);">AnTuTu</th>
+              <th style="padding: 16px 16px; text-align: center; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--color-border);">GB6 Single</th>
+              <th style="padding: 16px 16px; text-align: center; font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--color-border);">代表デバイス</th>
+            </tr>
+          </thead>
+          <tbody>
+            {aChips.map((chip, i) => (
+              <tr style={`
+                border-bottom: 1px solid var(--color-border);
+                transition: background 0.15s ease;
+                background: ${i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'};
+              `} class="table-row">
+                <td style="
+                  padding: 14px 20px;
+                  position: sticky;
+                  left: 0;
+                  background: inherit;
+                  z-index: 1;
+                  border-right: 1px solid var(--color-border);
+                ">
+                  <a href={`/chip/${chip.slug}`} style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                    <div style={`width: 8px; height: 8px; border-radius: 50%; background: ${chip.color}; flex-shrink: 0;`}></div>
+                    <span style="font-size: 13px; font-weight: 600; color: var(--color-text); white-space: nowrap;">{chip.name}</span>
+                  </a>
+                </td>
+                <td style="padding: 14px 16px; text-align: center; color: var(--color-text-secondary); white-space: nowrap;">{chip.processNode}</td>
+                <td style="padding: 14px 16px; text-align: center;">
+                  <span style="font-weight: 600; color: var(--color-text);">{chip.cpu.totalCores}</span>
+                  <span style="font-size: 11px; color: var(--color-text-secondary);"> コア</span>
+                </td>
+                <td style="padding: 14px 16px; text-align: center;">
+                  <span style="font-weight: 600; color: var(--color-text);">{chip.gpu.maxCores ?? chip.gpu.cores}</span>
+                  <span style="font-size: 11px; color: var(--color-text-secondary);"> コア</span>
+                </td>
+                <td style="padding: 14px 16px; text-align: center;">
+                  <span style="font-weight: 600; color: var(--color-text);">{chip.neuralEngine.tops}</span>
+                  <span style="font-size: 11px; color: var(--color-text-secondary);"> TOPS</span>
+                </td>
+                <td style="padding: 14px 16px; text-align: center;">
+                  <span style={`font-weight: 600; color: ${chip.color};`}>{chip.memory.maxCapacityGB}</span>
+                  <span style="font-size: 11px; color: var(--color-text-secondary);"> GB</span>
+                </td>
+                <td style="padding: 14px 16px; text-align: center; color: var(--color-text-secondary);">
+                  {chip.benchmarks.antutu?.toLocaleString('ja-JP') ?? '—'}
+                </td>
+                <td style="padding: 14px 16px; text-align: center; color: var(--color-text-secondary);">
+                  {chip.benchmarks.geekbench6SingleCore?.toLocaleString('ja-JP') ?? '—'}
+                </td>
+                <td style="padding: 14px 16px; text-align: center; color: var(--color-text-secondary); font-size: 12px; max-width: 160px;">
+                  {chip.devices[0]}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size: 12px; color: var(--color-text-secondary); margin-top: 12px;">
+        ※ GB6 = Geekbench 6。ベンチマーク値は参考値です。
+      </p>
+    </div>
+  </section>
+
+  <!-- チップ詳細カード -->
+  <section class="section-padding" style="background: var(--color-surface);">
+    <div class="container-max">
+      <h2 style="font-size: 22px; font-weight: 700; color: var(--color-text); margin-bottom: 40px;" class="reveal">
+        各チップ詳細
+      </h2>
+
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        {aChips.map(chip => (
+          <a href={`/chip/${chip.slug}`} style={`
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+            padding: 28px 32px;
+            background: var(--color-bg);
+            border-radius: 16px;
+            border: 1px solid var(--color-border);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            align-items: start;
+          `} class="reveal chip-detail-row">
+            <!-- チップ情報 -->
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                <div style={`width: 10px; height: 10px; border-radius: 50%; background: ${chip.color}; flex-shrink: 0;`}></div>
+                <h3 style="font-size: 17px; font-weight: 700; color: var(--color-text);">{chip.name}</h3>
+              </div>
+              <p style="font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin: 0;">{chip.description.slice(0, 80)}…</p>
+            </div>
+
+            <!-- スペック -->
+            <div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <div style="font-size: 12px;">
+                  <div style="color: var(--color-text-secondary); margin-bottom: 2px;">プロセス</div>
+                  <div style="color: var(--color-text); font-weight: 600;">{chip.processNode}</div>
+                </div>
+                <div style="font-size: 12px;">
+                  <div style="color: var(--color-text-secondary); margin-bottom: 2px;">Neural Engine</div>
+                  <div style={`color: ${chip.color}; font-weight: 600;`}>{chip.neuralEngine.tops} TOPS</div>
+                </div>
+                <div style="font-size: 12px;">
+                  <div style="color: var(--color-text-secondary); margin-bottom: 2px;">CPU</div>
+                  <div style="color: var(--color-text); font-weight: 600;">{chip.cpu.totalCores}コア</div>
+                </div>
+                <div style="font-size: 12px;">
+                  <div style="color: var(--color-text-secondary); margin-bottom: 2px;">GPU</div>
+                  <div style="color: var(--color-text); font-weight: 600;">{chip.gpu.maxCores ?? chip.gpu.cores}コア</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 搭載デバイス -->
+            <div>
+              <div style="font-size: 11px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">搭載デバイス</div>
+              <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px;">
+                {chip.devices.slice(0, 3).map(device => (
+                  <li style="font-size: 12px; color: var(--color-text); display: flex; align-items: center; gap: 6px;">
+                    <span style={`width: 4px; height: 4px; border-radius: 50%; background: ${chip.color};`}></span>
+                    {device}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .table-row:hover {
+    background: rgba(255, 255, 255, 0.04) !important;
+  }
+
+  .light .table-row:hover {
+    background: rgba(0, 0, 0, 0.03) !important;
+  }
+
+  .chip-detail-row:hover {
+    border-color: var(--color-accent) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 113, 227, 0.08);
+  }
+
+  @media (max-width: 640px) {
+    .chip-detail-row {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.utils.toArray<HTMLElement>('.reveal').forEach((el) => {
+    gsap.fromTo(el,
+      { y: 40, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      }
+    );
+  });
+</script>

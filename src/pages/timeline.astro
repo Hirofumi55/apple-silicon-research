@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { ChipSpec } from '../types/chip';
+import chipsData from '../data/chips.json';
+
+const chips = chipsData as ChipSpec[];
+// 発売順にソート
+const sorted = [...chips].sort((a, b) => a.releaseDate.localeCompare(b.releaseDate));
+
+// 年ごとにグループ
+const byYear = sorted.reduce<Record<string, ChipSpec[]>>((acc, chip) => {
+  const year = chip.releaseDate.split('-')[0];
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(chip);
+  return acc;
+}, {});
+
+const years = Object.keys(byYear).sort();
+---
+
+<BaseLayout
+  title="Apple Silicon タイムライン"
+  description="Apple Silicon進化の歴史。M1（2020年）からM5 Max（2026年）、A15（2021年）からA19 Pro（2025年）まで、全チップの発売時期と特徴をタイムラインで確認。"
+>
+  <section style="
+    padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 48px) 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  ">
+    <div class="reveal">
+      <div style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;">
+        <a href="/" style="font-size: 13px; color: var(--color-text-secondary); text-decoration: none;">ホーム</a>
+        <span style="color: var(--color-text-secondary);">/</span>
+        <span style="font-size: 13px; color: var(--color-text);">タイムライン</span>
+      </div>
+      <h1 style="
+        font-size: clamp(32px, 6vw, 64px);
+        font-weight: 800;
+        color: var(--color-text);
+        letter-spacing: -2px;
+        margin-bottom: 16px;
+      ">Apple Silicon<br><span class="text-gradient-accent">進化の歴史</span></h1>
+      <p style="font-size: 16px; color: var(--color-text-secondary); max-width: 560px; line-height: 1.7;">
+        2020年のM1登場から2026年まで。Appleシリコンの革命的な進化を時系列で振り返る。
+      </p>
+    </div>
+  </section>
+
+  <!-- タイムライン -->
+  <section class="section-padding">
+    <div class="container-max">
+      <div style="position: relative; padding-left: 40px;">
+        <!-- タイムラインライン -->
+        <div style="
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 2px;
+          background: linear-gradient(180deg, var(--color-accent), #BB8FCE);
+          border-radius: 1px;
+        "></div>
+
+        {years.map((year, yi) => (
+          <div style="margin-bottom: 64px;" class="reveal">
+            <!-- 年ラベル -->
+            <div style="
+              display: flex;
+              align-items: center;
+              gap: 16px;
+              margin-bottom: 32px;
+              position: relative;
+            ">
+              <div style="
+                position: absolute;
+                left: -49px;
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                background: var(--color-accent);
+                border: 3px solid var(--color-bg);
+                box-shadow: 0 0 12px rgba(0, 113, 227, 0.5);
+              "></div>
+              <h2 style="
+                font-size: 32px;
+                font-weight: 800;
+                color: var(--color-text);
+                letter-spacing: -1px;
+              ">{year}</h2>
+            </div>
+
+            <!-- その年のチップ -->
+            <div style="
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+              gap: 16px;
+            ">
+              {byYear[year].map(chip => (
+                <a href={`/chip/${chip.slug}`} style="
+                  display: block;
+                  padding: 20px 24px;
+                  background: var(--color-surface);
+                  border-radius: 12px;
+                  border: 1px solid var(--color-border);
+                  text-decoration: none;
+                  transition: all 0.2s ease;
+                " class="timeline-card">
+                  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <div style={`width: 10px; height: 10px; border-radius: 50%; background: ${chip.color};`}></div>
+                    <span style="font-size: 15px; font-weight: 700; color: var(--color-text);">{chip.name}</span>
+                    <span style={`font-size: 11px; color: ${chip.color}; margin-left: auto;`}>{chip.processNode}</span>
+                  </div>
+                  <p style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px;">
+                    {chip.description.slice(0, 70)}…
+                  </p>
+                  <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    {chip.highlights.slice(0, 2).map(h => (
+                      <span style={`
+                        font-size: 11px;
+                        padding: 3px 8px;
+                        border-radius: 4px;
+                        background: ${chip.color}15;
+                        color: ${chip.color};
+                      `}>{h.slice(0, 20)}</span>
+                    ))}
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .timeline-card:hover {
+    border-color: var(--color-accent) !important;
+    transform: translateX(4px);
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.utils.toArray<HTMLElement>('.reveal').forEach((el) => {
+    gsap.fromTo(el, { x: -30, opacity: 0 }, {
+      x: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' },
+    });
+  });
+</script>

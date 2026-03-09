@@ -1,0 +1,352 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ChipCard from '../components/chip/ChipCard.astro';
+import CountUpNumber from '../components/common/CountUpNumber.tsx';
+import type { ChipSpec } from '../types/chip';
+import chipsData from '../data/chips.json';
+
+const chips = chipsData as ChipSpec[];
+const mChips = chips.filter(c => c.series === 'm');
+const aChips = chips.filter(c => c.series === 'a');
+
+// ハイライト数値
+const latestM = chips.find(c => c.id === 'm5-max')!;
+const firstM = chips.find(c => c.id === 'm1')!;
+const cpuImprovement = Math.round(
+  ((latestM.benchmarks.geekbench6MultiCore ?? 1) / (firstM.benchmarks.geekbench6MultiCore ?? 1)) * 10
+) / 10;
+---
+
+<BaseLayout title="Apple Silicon Lab">
+  <!-- ヒーローセクション -->
+  <section style="
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 80px clamp(16px, 5vw, 48px);
+  ">
+    <!-- パーティクル背景 -->
+    <div style="position: absolute; inset: 0; pointer-events: none;" id="hero-particles">
+      {Array.from({length: 20}).map((_, i) => (
+        <div style={`
+          position: absolute;
+          width: ${Math.random() * 3 + 1}px;
+          height: ${Math.random() * 3 + 1}px;
+          background: #0071e3;
+          border-radius: 50%;
+          top: ${Math.random() * 100}%;
+          left: ${Math.random() * 100}%;
+          opacity: ${Math.random() * 0.4 + 0.1};
+          animation: float ${3 + Math.random() * 4}s ease-in-out infinite;
+          animation-delay: ${Math.random() * 3}s;
+        `}></div>
+      ))}
+    </div>
+
+    <!-- グラデーションオーバーレイ -->
+    <div style="
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 500px;
+      background: radial-gradient(ellipse at center, rgba(0, 113, 227, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    "></div>
+
+    <div style="max-width: 900px; text-align: center; position: relative; z-index: 1;">
+      <!-- バッジ -->
+      <div style="
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 16px;
+        border-radius: 20px;
+        background: rgba(0, 113, 227, 0.1);
+        border: 1px solid rgba(0, 113, 227, 0.3);
+        margin-bottom: 32px;
+        animation: fade-in-up 0.6s ease forwards;
+      ">
+        <div style="width: 6px; height: 6px; border-radius: 50%; background: #0071e3; animation: glow-pulse 2s ease-in-out infinite;"></div>
+        <span style="font-size: 13px; color: #0071e3; font-weight: 500;">M5 Pro / Max 発表 — 2026年3月</span>
+      </div>
+
+      <!-- メインタイトル -->
+      <h1 style="
+        font-size: clamp(40px, 8vw, 88px);
+        font-weight: 800;
+        line-height: 1.0;
+        letter-spacing: -3px;
+        margin-bottom: 24px;
+        animation: fade-in-up 0.7s ease 0.1s forwards;
+        opacity: 0;
+      ">
+        <span style="color: var(--color-text);">Apple Silicon</span><br>
+        <span class="text-gradient-accent">の全貌</span>
+      </h1>
+
+      <p style="
+        font-size: clamp(16px, 2.5vw, 20px);
+        color: var(--color-text-secondary);
+        max-width: 600px;
+        margin: 0 auto 48px;
+        line-height: 1.7;
+        animation: fade-in-up 0.7s ease 0.2s forwards;
+        opacity: 0;
+      ">
+        M1からM5、A15からA19まで。<br>
+        全チップのスペック・ベンチマーク・アーキテクチャを徹底比較。
+      </p>
+
+      <!-- CTAボタン -->
+      <div style="
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        animation: fade-in-up 0.7s ease 0.3s forwards;
+        opacity: 0;
+      ">
+        <a href="/compare" style="
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 14px 28px;
+          background: var(--color-accent);
+          color: white;
+          border-radius: 980px;
+          text-decoration: none;
+          font-size: 15px;
+          font-weight: 600;
+          transition: all 0.2s ease;
+          letter-spacing: -0.2px;
+        " class="cta-primary">
+          チップを比較する
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 7H12M7 2L12 7L7 12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="/m-series" style="
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 14px 28px;
+          background: rgba(255, 255, 255, 0.08);
+          color: var(--color-text);
+          border-radius: 980px;
+          text-decoration: none;
+          font-size: 15px;
+          font-weight: 500;
+          border: 1px solid var(--color-border);
+          transition: all 0.2s ease;
+        " class="cta-secondary">
+          Mシリーズを見る
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ハイライト数値セクション -->
+  <section class="section-padding" style="background: var(--color-surface);">
+    <div class="container-max">
+      <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1px;
+        background: var(--color-border);
+        border-radius: 16px;
+        overflow: hidden;
+      ">
+        <div style="padding: 40px 32px; background: var(--color-surface); text-align: center;">
+          <div style="font-size: clamp(36px, 6vw, 56px); font-weight: 800; color: var(--color-text); letter-spacing: -2px; line-height: 1;">
+            <CountUpNumber client:visible target={18} suffix="+" />
+          </div>
+          <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 8px;">掲載チップ数</div>
+        </div>
+        <div style="padding: 40px 32px; background: var(--color-surface); text-align: center;">
+          <div style="font-size: clamp(36px, 6vw, 56px); font-weight: 800; color: #DDA0DD; letter-spacing: -2px; line-height: 1;">
+            <CountUpNumber client:visible target={614} suffix=" GB/s" />
+          </div>
+          <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 8px;">M5 Max メモリ帯域</div>
+        </div>
+        <div style="padding: 40px 32px; background: var(--color-surface); text-align: center;">
+          <div style="font-size: clamp(36px, 6vw, 56px); font-weight: 800; color: #96CEB4; letter-spacing: -2px; line-height: 1;">
+            <CountUpNumber client:visible target={cpuImprovement} suffix="x" />
+          </div>
+          <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 8px;">M5 Max / M1 マルチコア比</div>
+        </div>
+        <div style="padding: 40px 32px; background: var(--color-surface); text-align: center;">
+          <div style="font-size: clamp(36px, 6vw, 56px); font-weight: 800; color: #BB8FCE; letter-spacing: -2px; line-height: 1;">
+            <CountUpNumber client:visible target={45} suffix=" TOPS" />
+          </div>
+          <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 8px;">M5 / A19 Neural Engine</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mシリーズセクション -->
+  <section class="section-padding">
+    <div class="container-max">
+      <!-- セクションヘッダー -->
+      <div style="margin-bottom: 56px;" class="reveal">
+        <div style="
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 16px;
+        ">
+          <div style="width: 24px; height: 2px; background: var(--color-accent);"></div>
+          <span style="font-size: 13px; font-weight: 600; color: var(--color-accent); text-transform: uppercase; letter-spacing: 1px;">M Series</span>
+        </div>
+        <h2 style="font-size: clamp(28px, 5vw, 48px); font-weight: 800; color: var(--color-text); letter-spacing: -1.5px; margin-bottom: 16px;">
+          Mac / iPad Pro向け<br>Mシリーズ
+        </h2>
+        <p style="font-size: 15px; color: var(--color-text-secondary); max-width: 500px; line-height: 1.7;">
+          M1からM5 Maxまで、15チップの性能進化を一覧で確認。
+          <a href="/m-series" style="color: var(--color-accent); text-decoration: none; font-weight: 500;">詳細比較 →</a>
+        </p>
+      </div>
+
+      <!-- チップグリッド -->
+      <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+      ">
+        {mChips.map((chip, i) => (
+          <div
+            class="reveal"
+            style={`animation-delay: ${i * 0.05}s;`}
+          >
+            <ChipCard chip={chip} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Aシリーズセクション -->
+  <section class="section-padding" style="background: linear-gradient(180deg, transparent 0%, var(--color-surface) 50%, transparent 100%);">
+    <div class="container-max">
+      <!-- セクションヘッダー -->
+      <div style="margin-bottom: 56px;" class="reveal">
+        <div style="
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 16px;
+        ">
+          <div style="width: 24px; height: 2px; background: #BB8FCE;"></div>
+          <span style="font-size: 13px; font-weight: 600; color: #BB8FCE; text-transform: uppercase; letter-spacing: 1px;">A Series</span>
+        </div>
+        <h2 style="font-size: clamp(28px, 5vw, 48px); font-weight: 800; color: var(--color-text); letter-spacing: -1.5px; margin-bottom: 16px;">
+          iPhone / iPad向け<br>Aシリーズ
+        </h2>
+        <p style="font-size: 15px; color: var(--color-text-secondary); max-width: 500px; line-height: 1.7;">
+          A15からA19 Proまで、スマートフォン向け最先端プロセッサの進化を追う。
+          <a href="/a-series" style="color: #BB8FCE; text-decoration: none; font-weight: 500;">詳細比較 →</a>
+        </p>
+      </div>
+
+      <!-- チップグリッド -->
+      <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+      ">
+        {aChips.map((chip, i) => (
+          <div
+            class="reveal"
+            style={`animation-delay: ${i * 0.05}s;`}
+          >
+            <ChipCard chip={chip} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 比較ツールCTAセクション -->
+  <section class="section-padding">
+    <div class="container-max">
+      <div style="
+        padding: clamp(48px, 8vw, 96px) clamp(32px, 6vw, 80px);
+        border-radius: 24px;
+        background: linear-gradient(135deg, rgba(0, 113, 227, 0.15) 0%, rgba(221, 160, 221, 0.1) 100%);
+        border: 1px solid rgba(0, 113, 227, 0.2);
+        text-align: center;
+      " class="reveal">
+        <h2 style="font-size: clamp(24px, 4vw, 40px); font-weight: 800; color: var(--color-text); letter-spacing: -1px; margin-bottom: 16px;">
+          自分のニーズに最適な<br>チップを見つける
+        </h2>
+        <p style="font-size: 15px; color: var(--color-text-secondary); margin-bottom: 40px; max-width: 400px; margin-left: auto; margin-right: auto; line-height: 1.7;">
+          最大3チップを選んで、スペックを横並びで比較。レーダーチャートとベンチマークグラフで視覚的に確認できます。
+        </p>
+        <a href="/compare" style="
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 16px 32px;
+          background: var(--color-accent);
+          color: white;
+          border-radius: 980px;
+          text-decoration: none;
+          font-size: 16px;
+          font-weight: 600;
+          transition: all 0.2s ease;
+        " class="cta-primary">
+          比較ツールを開く
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8H13M8 3L13 8L8 13" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .cta-primary:hover {
+    background: var(--color-accent-hover) !important;
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px -4px rgba(0, 113, 227, 0.4);
+  }
+
+  .cta-secondary:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  .light .cta-secondary:hover {
+    background: rgba(0, 0, 0, 0.08) !important;
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // リビール アニメーション
+  gsap.utils.toArray<HTMLElement>('.reveal').forEach((el) => {
+    gsap.fromTo(el,
+      { y: 50, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+      }
+    );
+  });
+</script>

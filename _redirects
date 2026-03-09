@@ -1,0 +1,5 @@
+# 404 フォールバック
+/chip/* /chip/:splat 200
+
+# リダイレクト
+/chips /compare 301

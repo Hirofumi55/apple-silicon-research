@@ -1,0 +1,75 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer style="
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: 48px clamp(16px, 5vw, 48px);
+  margin-top: 120px;
+">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 32px; margin-bottom: 40px;">
+
+      <!-- ブランド -->
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="9" stroke="var(--color-accent)" stroke-width="1.5"/>
+            <circle cx="10" cy="10" r="4" fill="var(--color-accent)" opacity="0.8"/>
+            <circle cx="10" cy="10" r="1.5" fill="white"/>
+          </svg>
+          <span style="font-size: 13px; font-weight: 600; color: var(--color-text);">Silicon Lab</span>
+        </div>
+        <p style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.6;">
+          Apple Siliconの<br>性能・スペック<br>完全比較サイト
+        </p>
+      </div>
+
+      <!-- チップ -->
+      <div>
+        <h4 style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">チップ</h4>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+          <li><a href="/m-series" style="font-size: 13px; color: var(--color-text-secondary); text-decoration: none; hover:color: var(--color-text);">Mシリーズ</a></li>
+          <li><a href="/a-series" style="font-size: 13px; color: var(--color-text-secondary); text-decoration: none;">Aシリーズ</a></li>
+          <li><a href="/compare" style="font-size: 13px; color: var(--color-text-secondary); text-decoration: none;">チップ比較</a></li>
+        </ul>
+      </div>
+
+      <!-- 情報 -->
+      <div>
+        <h4 style="font-size: 11px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">情報</h4>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+          <li><a href="/timeline" style="font-size: 13px; color: var(--color-text-secondary); text-decoration: none;">タイムライン</a></li>
+          <li><a href="/architecture" style="font-size: 13px; color: var(--color-text-secondary); text-decoration: none;">技術解説</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- 下部 -->
+    <div style="
+      border-top: 1px solid var(--color-border);
+      padding-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+    ">
+      <p style="font-size: 12px; color: var(--color-text-secondary);">
+        © {currentYear} Silicon Lab. 教育・情報目的のファンサイトです。
+      </p>
+      <p style="font-size: 12px; color: var(--color-text-secondary);">
+        Apple、M1、M2等はApple Inc.の商標です。
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer a:hover {
+    color: var(--color-text) !important;
+    transition: color 0.2s ease;
+  }
+</style>

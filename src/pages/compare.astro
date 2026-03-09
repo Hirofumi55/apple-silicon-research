@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ChipCompareTool from '../components/compare/ChipCompareTool.tsx';
+import type { ChipSpec } from '../types/chip';
+import chipsData from '../data/chips.json';
+
+const chips = chipsData as ChipSpec[];
+---
+
+<BaseLayout
+  title="チップ比較ツール"
+  description="Apple Silicon チップ比較ツール。M1〜M5・A15〜A19から最大3チップを選択し、CPU/GPU/Neural Engine/メモリをレーダーチャートと棒グラフで比較。"
+>
+  <section style="
+    padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 48px) 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  ">
+    <div class="reveal">
+      <div style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;">
+        <a href="/" style="font-size: 13px; color: var(--color-text-secondary); text-decoration: none;">ホーム</a>
+        <span style="color: var(--color-text-secondary);">/</span>
+        <span style="font-size: 13px; color: var(--color-text);">チップ比較</span>
+      </div>
+      <h1 style="
+        font-size: clamp(32px, 6vw, 64px);
+        font-weight: 800;
+        color: var(--color-text);
+        letter-spacing: -2px;
+        margin-bottom: 16px;
+      ">インタラクティブ<br><span class="text-gradient-accent">チップ比較</span></h1>
+      <p style="font-size: 16px; color: var(--color-text-secondary); max-width: 560px; line-height: 1.7;">
+        最大3チップを選択してスペックを横並び比較。テーブルビューとレーダーチャートで視覚的に確認できます。
+      </p>
+    </div>
+  </section>
+
+  <section class="section-padding">
+    <div class="container-max">
+      <ChipCompareTool client:load chips={chips} />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.utils.toArray<HTMLElement>('.reveal').forEach((el) => {
+    gsap.fromTo(el, { y: 40, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' },
+    });
+  });
+</script>

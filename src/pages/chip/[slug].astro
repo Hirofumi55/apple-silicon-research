@@ -1,0 +1,473 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import type { ChipSpec } from '../../types/chip';
+import chipsData from '../../data/chips.json';
+
+export function getStaticPaths() {
+  return (chipsData as ChipSpec[]).map(chip => ({
+    params: { slug: chip.slug },
+    props: { chip },
+  }));
+}
+
+interface Props {
+  chip: ChipSpec;
+}
+
+const { chip } = Astro.props;
+const allChips = chipsData as ChipSpec[];
+
+// 前世代チップを探す
+const sameSeries = allChips.filter(c => c.series === chip.series && c.variant === chip.variant);
+const currentIndex = sameSeries.findIndex(c => c.id === chip.id);
+const prevChip = currentIndex > 0 ? sameSeries[currentIndex - 1] : null;
+const nextChip = currentIndex < sameSeries.length - 1 ? sameSeries[currentIndex + 1] : null;
+
+// Geekbench6シングルコアの比較
+const singleImprovement = prevChip?.benchmarks.geekbench6SingleCore && chip.benchmarks.geekbench6SingleCore
+  ? Math.round((chip.benchmarks.geekbench6SingleCore / prevChip.benchmarks.geekbench6SingleCore - 1) * 100)
+  : null;
+const multiImprovement = prevChip?.benchmarks.geekbench6MultiCore && chip.benchmarks.geekbench6MultiCore
+  ? Math.round((chip.benchmarks.geekbench6MultiCore / prevChip.benchmarks.geekbench6MultiCore - 1) * 100)
+  : null;
+---
+
+<BaseLayout
+  title={chip.name}
+  description={chip.description}
+>
+  <!-- ページヘッダー -->
+  <section style={`
+    padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 48px) clamp(60px, 8vw, 100px);
+    position: relative;
+    overflow: hidden;
+  `}>
+    <!-- 背景グロー -->
+    <div style={`
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse at center, ${chip.color}18 0%, transparent 70%);
+      pointer-events: none;
+    `}></div>
+
+    <div class="container-max" style="position: relative;">
+      <!-- パンくず -->
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 32px; font-size: 13px;" class="reveal">
+        <a href="/" style="color: var(--color-text-secondary); text-decoration: none;">ホーム</a>
+        <span style="color: var(--color-text-secondary);">/</span>
+        <a href={`/${chip.series}-series`} style="color: var(--color-text-secondary); text-decoration: none;">
+          {chip.series === 'm' ? 'Mシリーズ' : 'Aシリーズ'}
+        </a>
+        <span style="color: var(--color-text-secondary);">/</span>
+        <span style="color: var(--color-text);">{chip.name}</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: start;">
+        <!-- タイトル部 -->
+        <div class="reveal">
+          <!-- シリーズバッジ -->
+          <div style={`
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: ${chip.color}20;
+            border: 1px solid ${chip.color}40;
+            margin-bottom: 20px;
+          `}>
+            <div style={`width: 6px; height: 6px; border-radius: 50%; background: ${chip.color};`}></div>
+            <span style={`font-size: 11px; font-weight: 600; color: ${chip.color}; letter-spacing: 1px; text-transform: uppercase;`}>
+              {chip.series === 'm' ? 'M Series Mac' : 'A Series iPhone/iPad'}
+            </span>
+          </div>
+
+          <h1 style="
+            font-size: clamp(36px, 7vw, 72px);
+            font-weight: 800;
+            color: var(--color-text);
+            letter-spacing: -2.5px;
+            line-height: 1.0;
+            margin-bottom: 20px;
+          ">{chip.name}</h1>
+
+          <p style="font-size: 16px; color: var(--color-text-secondary); max-width: 580px; line-height: 1.7; margin-bottom: 32px;">
+            {chip.description}
+          </p>
+
+          <!-- ハイライト -->
+          <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+            {chip.highlights.map(h => (
+              <span style={`
+                font-size: 12px;
+                padding: 6px 12px;
+                border-radius: 20px;
+                background: ${chip.color}15;
+                color: ${chip.color};
+                border: 1px solid ${chip.color}30;
+              `}>{h}</span>
+            ))}
+          </div>
+        </div>
+
+        <!-- ダイショット風ビジュアル -->
+        <div class="reveal" style="display: flex; justify-content: center;">
+          <div style={`
+            width: 200px;
+            height: 200px;
+            border-radius: 24px;
+            background: ${chip.color}12;
+            border: 2px solid ${chip.color}30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+          `}>
+            <!-- 回路パターン風 SVG -->
+            <svg width="160" height="160" viewBox="0 0 160 160" fill="none">
+              <!-- 外枠 -->
+              <rect x="20" y="20" width="120" height="120" rx="8" stroke={chip.color} stroke-width="1" stroke-opacity="0.4"/>
+              <!-- 中央コア -->
+              <rect x="50" y="50" width="60" height="60" rx="4" fill={chip.color} fill-opacity="0.15" stroke={chip.color} stroke-width="1"/>
+              <!-- 内部格子 -->
+              <line x1="50" y1="70" x2="110" y2="70" stroke={chip.color} stroke-opacity="0.3" stroke-width="0.5"/>
+              <line x1="50" y1="90" x2="110" y2="90" stroke={chip.color} stroke-opacity="0.3" stroke-width="0.5"/>
+              <line x1="70" y1="50" x2="70" y2="110" stroke={chip.color} stroke-opacity="0.3" stroke-width="0.5"/>
+              <line x1="90" y1="50" x2="90" y2="110" stroke={chip.color} stroke-opacity="0.3" stroke-width="0.5"/>
+              <!-- センタードット -->
+              <circle cx="80" cy="80" r="8" fill={chip.color} fill-opacity="0.6"/>
+              <circle cx="80" cy="80" r="3" fill="white" fill-opacity="0.8"/>
+              <!-- 接続ライン -->
+              <line x1="20" y1="50" x2="50" y2="50" stroke={chip.color} stroke-opacity="0.4" stroke-width="0.5"/>
+              <line x1="20" y1="80" x2="50" y2="80" stroke={chip.color} stroke-opacity="0.4" stroke-width="0.5"/>
+              <line x1="20" y1="110" x2="50" y2="110" stroke={chip.color} stroke-opacity="0.4" stroke-width="0.5"/>
+              <line x1="110" y1="50" x2="140" y2="50" stroke={chip.color} stroke-opacity="0.4" stroke-width="0.5"/>
+              <line x1="110" y1="80" x2="140" y2="80" stroke={chip.color} stroke-opacity="0.4" stroke-width="0.5"/>
+              <line x1="110" y1="110" x2="140" y2="110" stroke={chip.color} stroke-opacity="0.4" stroke-width="0.5"/>
+              <line x1="50" y1="20" x2="50" y2="50" stroke={chip.color} stroke-opacity="0.4" stroke-width="0.5"/>
+              <line x1="80" y1="20" x2="80" y2="50" stroke={chip.color} stroke-opacity="0.4" stroke-width="0.5"/>
+              <line x1="110" y1="20" x2="110" y2="50" stroke={chip.color} stroke-opacity="0.4" stroke-width="0.5"/>
+              <line x1="50" y1="110" x2="50" y2="140" stroke={chip.color} stroke-opacity="0.4" stroke-width="0.5"/>
+              <line x1="80" y1="110" x2="80" y2="140" stroke={chip.color} stroke-opacity="0.4" stroke-width="0.5"/>
+              <line x1="110" y1="110" x2="110" y2="140" stroke={chip.color} stroke-opacity="0.4" stroke-width="0.5"/>
+              <!-- コーナー接触点 -->
+              <circle cx="20" cy="50" r="2" fill={chip.color} fill-opacity="0.5"/>
+              <circle cx="20" cy="80" r="2" fill={chip.color} fill-opacity="0.5"/>
+              <circle cx="20" cy="110" r="2" fill={chip.color} fill-opacity="0.5"/>
+              <circle cx="140" cy="50" r="2" fill={chip.color} fill-opacity="0.5"/>
+              <circle cx="140" cy="80" r="2" fill={chip.color} fill-opacity="0.5"/>
+              <circle cx="140" cy="110" r="2" fill={chip.color} fill-opacity="0.5"/>
+            </svg>
+
+            <!-- アニメーション -->
+            <div style={`
+              position: absolute;
+              inset: 0;
+              background: radial-gradient(circle at 50% 50%, ${chip.color}20, transparent 70%);
+              animation: glow-pulse 3s ease-in-out infinite;
+            `}></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- スペック詳細 -->
+  <section class="section-padding" style="background: var(--color-surface);">
+    <div class="container-max">
+      <h2 style="font-size: 22px; font-weight: 700; color: var(--color-text); margin-bottom: 40px;" class="reveal">
+        詳細スペック
+      </h2>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+        <!-- 基本情報 -->
+        <div style="
+          padding: 28px;
+          background: var(--color-bg);
+          border-radius: 16px;
+          border: 1px solid var(--color-border);
+        " class="reveal">
+          <h3 style="font-size: 13px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">基本情報</h3>
+          <dl style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <dt style="font-size: 13px; color: var(--color-text-secondary);">プロセスノード</dt>
+              <dd style={`font-size: 14px; font-weight: 600; color: ${chip.color};`}>{chip.processNode}</dd>
+            </div>
+            <div style="height: 1px; background: var(--color-border);"></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <dt style="font-size: 13px; color: var(--color-text-secondary);">トランジスタ数</dt>
+              <dd style="font-size: 14px; font-weight: 600; color: var(--color-text);">{chip.transistors}</dd>
+            </div>
+            <div style="height: 1px; background: var(--color-border);"></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <dt style="font-size: 13px; color: var(--color-text-secondary);">発売時期</dt>
+              <dd style="font-size: 14px; font-weight: 600; color: var(--color-text);">{chip.releaseDate.replace('-', '年')}月</dd>
+            </div>
+            <div style="height: 1px; background: var(--color-border);"></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <dt style="font-size: 13px; color: var(--color-text-secondary);">メモリタイプ</dt>
+              <dd style="font-size: 14px; font-weight: 600; color: var(--color-text);">{chip.memory.type}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <!-- CPU -->
+        <div style="
+          padding: 28px;
+          background: var(--color-bg);
+          border-radius: 16px;
+          border: 1px solid var(--color-border);
+        " class="reveal">
+          <h3 style="font-size: 13px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">CPU</h3>
+          <div style="margin-bottom: 20px;">
+            <div style="font-size: 48px; font-weight: 800; color: var(--color-text); letter-spacing: -2px; line-height: 1;">{chip.cpu.totalCores}</div>
+            <div style="font-size: 14px; color: var(--color-text-secondary);">コア</div>
+          </div>
+          <dl style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; justify-content: space-between;">
+              <dt style="font-size: 13px; color: var(--color-text-secondary);">高性能コア</dt>
+              <dd style="font-size: 13px; font-weight: 600; color: var(--color-text);">{chip.cpu.performanceCores}</dd>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <dt style="font-size: 13px; color: var(--color-text-secondary);">高効率コア</dt>
+              <dd style="font-size: 13px; font-weight: 600; color: var(--color-text);">{chip.cpu.efficiencyCores}</dd>
+            </div>
+            {chip.cpu.maxClockSpeed && (
+              <div style="display: flex; justify-content: space-between;">
+                <dt style="font-size: 13px; color: var(--color-text-secondary);">最大クロック</dt>
+                <dd style={`font-size: 13px; font-weight: 600; color: ${chip.color};`}>{chip.cpu.maxClockSpeed}</dd>
+              </div>
+            )}
+          </dl>
+        </div>
+
+        <!-- GPU -->
+        <div style="
+          padding: 28px;
+          background: var(--color-bg);
+          border-radius: 16px;
+          border: 1px solid var(--color-border);
+        " class="reveal">
+          <h3 style="font-size: 13px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">GPU</h3>
+          <div style="margin-bottom: 20px;">
+            <div style={`font-size: 48px; font-weight: 800; color: ${chip.color}; letter-spacing: -2px; line-height: 1;`}>{chip.gpu.maxCores ?? chip.gpu.cores}</div>
+            <div style="font-size: 14px; color: var(--color-text-secondary);">コア</div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            {chip.gpu.features.map(f => (
+              <span style="font-size: 11px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,0.06); color: var(--color-text-secondary); border: 1px solid var(--color-border);">{f}</span>
+            ))}
+          </div>
+        </div>
+
+        <!-- Neural Engine -->
+        <div style="
+          padding: 28px;
+          background: var(--color-bg);
+          border-radius: 16px;
+          border: 1px solid var(--color-border);
+        " class="reveal">
+          <h3 style="font-size: 13px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Neural Engine</h3>
+          <div style="margin-bottom: 8px;">
+            <div style={`font-size: 48px; font-weight: 800; color: ${chip.color}; letter-spacing: -2px; line-height: 1;`}>{chip.neuralEngine.tops}</div>
+            <div style="font-size: 14px; color: var(--color-text-secondary);">TOPS</div>
+          </div>
+          <p style="font-size: 13px; color: var(--color-text-secondary);">{chip.neuralEngine.cores}コア Neural Engine</p>
+          <p style="font-size: 12px; color: var(--color-text-secondary); margin-top: 8px;">1秒間に{chip.neuralEngine.tops}兆回の演算を実行可能</p>
+        </div>
+
+        <!-- メモリ -->
+        <div style="
+          padding: 28px;
+          background: var(--color-bg);
+          border-radius: 16px;
+          border: 1px solid var(--color-border);
+        " class="reveal">
+          <h3 style="font-size: 13px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">統合メモリ</h3>
+          <dl style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <dt style="font-size: 13px; color: var(--color-text-secondary);">最大容量</dt>
+              <dd style={`font-size: 20px; font-weight: 700; color: ${chip.color};`}>{chip.memory.maxCapacityGB}GB</dd>
+            </div>
+            <div style="height: 1px; background: var(--color-border);"></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <dt style="font-size: 13px; color: var(--color-text-secondary);">メモリ帯域幅</dt>
+              <dd style={`font-size: 20px; font-weight: 700; color: ${chip.color};`}>{chip.memory.bandwidthGBs} GB/s</dd>
+            </div>
+            <div style="height: 1px; background: var(--color-border);"></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <dt style="font-size: 13px; color: var(--color-text-secondary);">メモリ規格</dt>
+              <dd style="font-size: 14px; font-weight: 600; color: var(--color-text);">{chip.memory.type}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <!-- ベンチマーク -->
+        <div style="
+          padding: 28px;
+          background: var(--color-bg);
+          border-radius: 16px;
+          border: 1px solid var(--color-border);
+        " class="reveal">
+          <h3 style="font-size: 13px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">ベンチマーク</h3>
+          <dl style="display: flex; flex-direction: column; gap: 12px;">
+            {chip.benchmarks.geekbench6SingleCore && (
+              <>
+                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                  <dt style="font-size: 12px; color: var(--color-text-secondary);">Geekbench 6 (Single)</dt>
+                  <dd style="font-size: 16px; font-weight: 700; color: var(--color-text);">{chip.benchmarks.geekbench6SingleCore.toLocaleString('ja-JP')}</dd>
+                </div>
+                <div style="height: 1px; background: var(--color-border);"></div>
+              </>
+            )}
+            {chip.benchmarks.geekbench6MultiCore && (
+              <>
+                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                  <dt style="font-size: 12px; color: var(--color-text-secondary);">Geekbench 6 (Multi)</dt>
+                  <dd style={`font-size: 16px; font-weight: 700; color: ${chip.color};`}>{chip.benchmarks.geekbench6MultiCore.toLocaleString('ja-JP')}</dd>
+                </div>
+                <div style="height: 1px; background: var(--color-border);"></div>
+              </>
+            )}
+            {chip.benchmarks.antutu && (
+              <>
+                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                  <dt style="font-size: 12px; color: var(--color-text-secondary);">AnTuTu</dt>
+                  <dd style={`font-size: 16px; font-weight: 700; color: ${chip.color};`}>{chip.benchmarks.antutu.toLocaleString('ja-JP')}</dd>
+                </div>
+                <div style="height: 1px; background: var(--color-border);"></div>
+              </>
+            )}
+            {chip.benchmarks.metalScore && (
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <dt style="font-size: 12px; color: var(--color-text-secondary);">Metal Score</dt>
+                <dd style="font-size: 16px; font-weight: 700; color: var(--color-text);">{chip.benchmarks.metalScore.toLocaleString('ja-JP')}</dd>
+              </div>
+            )}
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 搭載デバイス -->
+  <section class="section-padding">
+    <div class="container-max">
+      <h2 style="font-size: 22px; font-weight: 700; color: var(--color-text); margin-bottom: 32px;" class="reveal">
+        搭載デバイス
+      </h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px;" class="reveal">
+        {chip.devices.map(device => (
+          <div style={`
+            padding: 12px 20px;
+            border-radius: 10px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            font-size: 14px;
+            color: var(--color-text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          `}>
+            <span style={`width: 6px; height: 6px; border-radius: 50%; background: ${chip.color};`}></span>
+            {device}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 前後チップナビゲーション -->
+  <section style="padding: 0 clamp(16px, 5vw, 48px) 80px;" class="reveal">
+    <div class="container-max">
+      <div style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        border-top: 1px solid var(--color-border);
+        padding-top: 40px;
+      ">
+        {prevChip ? (
+          <a href={`/chip/${prevChip.slug}`} style="
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 24px;
+            background: var(--color-surface);
+            border-radius: 12px;
+            border: 1px solid var(--color-border);
+            text-decoration: none;
+            transition: all 0.2s ease;
+          " class="nav-chip-card">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M12 4L6 10L12 16" stroke="var(--color-text-secondary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div>
+              <div style="font-size: 11px; color: var(--color-text-secondary); margin-bottom: 2px;">前世代</div>
+              <div style="font-size: 15px; font-weight: 600; color: var(--color-text);">{prevChip.name}</div>
+            </div>
+          </a>
+        ) : <div></div>}
+
+        {nextChip ? (
+          <a href={`/chip/${nextChip.slug}`} style="
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 20px 24px;
+            background: var(--color-surface);
+            border-radius: 12px;
+            border: 1px solid var(--color-border);
+            text-decoration: none;
+            transition: all 0.2s ease;
+          " class="nav-chip-card">
+            <div style="text-align: right;">
+              <div style="font-size: 11px; color: var(--color-text-secondary); margin-bottom: 2px;">次世代</div>
+              <div style="font-size: 15px; font-weight: 600; color: var(--color-text);">{nextChip.name}</div>
+            </div>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M8 4L14 10L8 16" stroke="var(--color-text-secondary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        ) : <div></div>}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nav-chip-card:hover {
+    border-color: var(--color-accent) !important;
+    transform: translateY(-2px);
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.utils.toArray<HTMLElement>('.reveal').forEach((el) => {
+    gsap.fromTo(el,
+      { y: 40, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          toggleActions: 'play none none none',
+        },
+      }
+    );
+  });
+</script>

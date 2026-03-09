@@ -1,0 +1,1012 @@
+[
+  {
+    "id": "m1",
+    "slug": "m1",
+    "name": "Apple M1",
+    "series": "m",
+    "variant": "base",
+    "releaseDate": "2020-11",
+    "processNode": "5nm",
+    "transistors": "16 billion",
+    "cpu": {
+      "totalCores": 8,
+      "performanceCores": 4,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "3.2 GHz"
+    },
+    "gpu": {
+      "cores": 7,
+      "maxCores": 8,
+      "features": ["Apple Family 7", "TBDR"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 11
+    },
+    "memory": {
+      "type": "LPDDR4X",
+      "maxCapacityGB": 16,
+      "bandwidthGBs": 68.25
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 2370,
+      "geekbench6MultiCore": 8930,
+      "cinebenchR23SingleCore": 1498,
+      "cinebenchR23MultiCore": 7743,
+      "metalScore": 21000
+    },
+    "devices": ["MacBook Air 13\"", "MacBook Pro 13\"", "Mac mini", "iMac 24\"", "iPad Pro"],
+    "highlights": ["Appleシリコン第1世代", "x86からARMへの革命的移行", "業界トップクラスの電力効率"],
+    "color": "#FF6B6B",
+    "description": "Apple初のMacおよびiPad向けARMベースSoC。x86アーキテクチャからの移行を実現し、性能と電力効率の両面で業界に衝撃を与えた革命的なチップ。"
+  },
+  {
+    "id": "m1-pro",
+    "slug": "m1-pro",
+    "name": "Apple M1 Pro",
+    "series": "m",
+    "variant": "pro",
+    "releaseDate": "2021-10",
+    "processNode": "5nm",
+    "transistors": "33.7 billion",
+    "cpu": {
+      "totalCores": 10,
+      "performanceCores": 8,
+      "efficiencyCores": 2,
+      "maxClockSpeed": "3.2 GHz"
+    },
+    "gpu": {
+      "cores": 14,
+      "maxCores": 16,
+      "features": ["Apple Family 7", "TBDR", "ProRes加速"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 11
+    },
+    "memory": {
+      "type": "LPDDR5",
+      "maxCapacityGB": 32,
+      "bandwidthGBs": 200
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 2380,
+      "geekbench6MultiCore": 12110,
+      "cinebenchR23SingleCore": 1520,
+      "cinebenchR23MultiCore": 12442,
+      "metalScore": 49000
+    },
+    "devices": ["MacBook Pro 14\"", "MacBook Pro 16\""],
+    "highlights": ["ProRes専用ハードウェアエンコーダ/デコーダ", "200 GB/sメモリ帯域", "プロフェッショナル向け初のMチップ"],
+    "color": "#FF6B6B",
+    "description": "プロフェッショナルユーザー向けに設計されたM1のハイエンドバリアント。大幅に強化されたGPUとメモリ帯域域を持ち、ProRes動画処理を専用ハードウェアでサポート。"
+  },
+  {
+    "id": "m1-max",
+    "slug": "m1-max",
+    "name": "Apple M1 Max",
+    "series": "m",
+    "variant": "max",
+    "releaseDate": "2021-10",
+    "processNode": "5nm",
+    "transistors": "57 billion",
+    "cpu": {
+      "totalCores": 10,
+      "performanceCores": 8,
+      "efficiencyCores": 2,
+      "maxClockSpeed": "3.2 GHz"
+    },
+    "gpu": {
+      "cores": 24,
+      "maxCores": 32,
+      "features": ["Apple Family 7", "TBDR", "ProRes加速 x2"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 11
+    },
+    "memory": {
+      "type": "LPDDR5",
+      "maxCapacityGB": 64,
+      "bandwidthGBs": 400
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 2390,
+      "geekbench6MultiCore": 12180,
+      "cinebenchR23SingleCore": 1524,
+      "cinebenchR23MultiCore": 12530,
+      "metalScore": 78000
+    },
+    "devices": ["MacBook Pro 14\"", "MacBook Pro 16\"", "Mac Studio"],
+    "highlights": ["400 GB/sメモリ帯域", "最大64GB統合メモリ", "デュアルProResエンジン"],
+    "color": "#FF6B6B",
+    "description": "M1 Proの2倍のGPUコアを搭載したハイエンドモデル。圧倒的なグラフィック性能と400 GB/sの超高速メモリ帯域で、最も要求の高いプロ向けワークフローに対応。"
+  },
+  {
+    "id": "m1-ultra",
+    "slug": "m1-ultra",
+    "name": "Apple M1 Ultra",
+    "series": "m",
+    "variant": "ultra",
+    "releaseDate": "2022-03",
+    "processNode": "5nm",
+    "transistors": "114 billion",
+    "cpu": {
+      "totalCores": 20,
+      "performanceCores": 16,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "3.2 GHz"
+    },
+    "gpu": {
+      "cores": 48,
+      "maxCores": 64,
+      "features": ["Apple Family 7", "TBDR", "ProRes加速 x4", "UltraFusion"]
+    },
+    "neuralEngine": {
+      "cores": 32,
+      "tops": 22
+    },
+    "memory": {
+      "type": "LPDDR5",
+      "maxCapacityGB": 128,
+      "bandwidthGBs": 800
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 2390,
+      "geekbench6MultiCore": 24100,
+      "cinebenchR23SingleCore": 1524,
+      "cinebenchR23MultiCore": 24840,
+      "metalScore": 155000
+    },
+    "devices": ["Mac Studio", "Mac Pro"],
+    "highlights": ["UltraFusion技術でM1 Maxを2個結合", "800 GB/sメモリ帯域", "最大128GB統合メモリ"],
+    "color": "#FF6B6B",
+    "description": "UltraFusion技術によりM1 Maxを2個を高速インターコネクトで結合した最上位チップ。OSには単一のチップとして認識され、ワークステーション級の性能を提供。"
+  },
+  {
+    "id": "m2",
+    "slug": "m2",
+    "name": "Apple M2",
+    "series": "m",
+    "variant": "base",
+    "releaseDate": "2022-06",
+    "processNode": "5nm Enhanced",
+    "transistors": "20 billion",
+    "cpu": {
+      "totalCores": 8,
+      "performanceCores": 4,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "3.49 GHz"
+    },
+    "gpu": {
+      "cores": 8,
+      "maxCores": 10,
+      "features": ["Apple Family 8", "TBDR", "Dynamic Caching"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 15.8
+    },
+    "memory": {
+      "type": "LPDDR5",
+      "maxCapacityGB": 24,
+      "bandwidthGBs": 100
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 2575,
+      "geekbench6MultiCore": 9830,
+      "cinebenchR23SingleCore": 1598,
+      "cinebenchR23MultiCore": 8515,
+      "metalScore": 30000
+    },
+    "devices": ["MacBook Air 13\"", "MacBook Air 15\"", "MacBook Pro 13\"", "Mac mini", "iPad Pro", "iPad Air"],
+    "highlights": ["Dynamic Caching技術導入", "M1比18%高速なCPU", "M1比35%高速なGPU"],
+    "color": "#4ECDC4",
+    "description": "M1の次世代モデル。Dynamic CachingによるGPUメモリ効率の改善と、全面的な性能向上を実現。より高い電力効率でプロ級の性能を幅広いデバイスに提供。"
+  },
+  {
+    "id": "m2-pro",
+    "slug": "m2-pro",
+    "name": "Apple M2 Pro",
+    "series": "m",
+    "variant": "pro",
+    "releaseDate": "2023-01",
+    "processNode": "5nm Enhanced",
+    "transistors": "40 billion",
+    "cpu": {
+      "totalCores": 12,
+      "performanceCores": 8,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "3.49 GHz"
+    },
+    "gpu": {
+      "cores": 16,
+      "maxCores": 19,
+      "features": ["Apple Family 8", "TBDR", "Dynamic Caching", "Ray Tracing"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 15.8
+    },
+    "memory": {
+      "type": "LPDDR5",
+      "maxCapacityGB": 32,
+      "bandwidthGBs": 200
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 2620,
+      "geekbench6MultiCore": 14920,
+      "cinebenchR23SingleCore": 1620,
+      "cinebenchR23MultiCore": 15220,
+      "metalScore": 55000
+    },
+    "devices": ["MacBook Pro 14\"", "MacBook Pro 16\"", "Mac mini"],
+    "highlights": ["ハードウェアRay Tracing対応", "최대 32GB統合メモリ", "ProRes専用エンコーダ/デコーダ"],
+    "color": "#4ECDC4",
+    "description": "M2 Proはハードウェアレイトレーシングを新たにサポートし、12コアCPUと最大19コアGPUで前世代を大幅に上回る性能を実現。"
+  },
+  {
+    "id": "m2-max",
+    "slug": "m2-max",
+    "name": "Apple M2 Max",
+    "series": "m",
+    "variant": "max",
+    "releaseDate": "2023-01",
+    "processNode": "5nm Enhanced",
+    "transistors": "67 billion",
+    "cpu": {
+      "totalCores": 12,
+      "performanceCores": 8,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "3.49 GHz"
+    },
+    "gpu": {
+      "cores": 30,
+      "maxCores": 38,
+      "features": ["Apple Family 8", "TBDR", "Dynamic Caching", "Ray Tracing"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 15.8
+    },
+    "memory": {
+      "type": "LPDDR5",
+      "maxCapacityGB": 96,
+      "bandwidthGBs": 400
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 2630,
+      "geekbench6MultiCore": 15100,
+      "cinebenchR23SingleCore": 1625,
+      "cinebenchR23MultiCore": 15380,
+      "metalScore": 96000
+    },
+    "devices": ["MacBook Pro 14\"", "MacBook Pro 16\"", "Mac Studio"],
+    "highlights": ["最大38コアGPU", "最大96GB統合メモリ", "400 GB/sメモリ帯域"],
+    "color": "#4ECDC4",
+    "description": "M2 ProのGPUコアを倍増し最大38コアを搭載。最大96GBの統合メモリと400 GB/sの帯域幅で、高度な3Dレンダリングや機械学習ワークロードに対応。"
+  },
+  {
+    "id": "m2-ultra",
+    "slug": "m2-ultra",
+    "name": "Apple M2 Ultra",
+    "series": "m",
+    "variant": "ultra",
+    "releaseDate": "2023-06",
+    "processNode": "5nm Enhanced",
+    "transistors": "134 billion",
+    "cpu": {
+      "totalCores": 24,
+      "performanceCores": 16,
+      "efficiencyCores": 8,
+      "maxClockSpeed": "3.49 GHz"
+    },
+    "gpu": {
+      "cores": 60,
+      "maxCores": 76,
+      "features": ["Apple Family 8", "TBDR", "Dynamic Caching", "Ray Tracing", "UltraFusion"]
+    },
+    "neuralEngine": {
+      "cores": 32,
+      "tops": 31.6
+    },
+    "memory": {
+      "type": "LPDDR5",
+      "maxCapacityGB": 192,
+      "bandwidthGBs": 800
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 2640,
+      "geekbench6MultiCore": 29980,
+      "cinebenchR23SingleCore": 1628,
+      "cinebenchR23MultiCore": 30200,
+      "metalScore": 191000
+    },
+    "devices": ["Mac Studio", "Mac Pro"],
+    "highlights": ["最大76コアGPU", "最大192GB統合メモリ", "800 GB/sメモリ帯域"],
+    "color": "#4ECDC4",
+    "description": "M2 Maxを2個UltraFusionで接続。最大76コアGPUと192GBの統合メモリを備え、大規模なAI/MLトレーニングやプロフェッショナルコンテンツ制作に最適。"
+  },
+  {
+    "id": "m3",
+    "slug": "m3",
+    "name": "Apple M3",
+    "series": "m",
+    "variant": "base",
+    "releaseDate": "2023-10",
+    "processNode": "3nm",
+    "transistors": "25 billion",
+    "cpu": {
+      "totalCores": 8,
+      "performanceCores": 4,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "4.05 GHz"
+    },
+    "gpu": {
+      "cores": 8,
+      "maxCores": 10,
+      "features": ["Apple Family 9", "TBDR", "Dynamic Caching", "Ray Tracing", "Mesh Shading"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 18
+    },
+    "memory": {
+      "type": "LPDDR5",
+      "maxCapacityGB": 24,
+      "bandwidthGBs": 100
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 3000,
+      "geekbench6MultiCore": 11850,
+      "cinebenchR23SingleCore": 1850,
+      "cinebenchR23MultiCore": 9450,
+      "metalScore": 35000
+    },
+    "devices": ["MacBook Pro 14\"", "MacBook Air 13\"", "MacBook Air 15\"", "iMac 24\""],
+    "highlights": ["業界初3nmプロセスでのGPU", "Mesh Shadingサポート", "ハードウェアレイトレーシング強化"],
+    "color": "#45B7D1",
+    "description": "TSMCの3nmプロセスを採用した初のMシリーズ。GPUはMesh ShadingとRay Tracingを完全サポートし、グラフィック性能が大幅に向上。前世代比で電力効率も改善。"
+  },
+  {
+    "id": "m3-pro",
+    "slug": "m3-pro",
+    "name": "Apple M3 Pro",
+    "series": "m",
+    "variant": "pro",
+    "releaseDate": "2023-10",
+    "processNode": "3nm",
+    "transistors": "37 billion",
+    "cpu": {
+      "totalCores": 12,
+      "performanceCores": 6,
+      "efficiencyCores": 6,
+      "maxClockSpeed": "4.05 GHz"
+    },
+    "gpu": {
+      "cores": 14,
+      "maxCores": 18,
+      "features": ["Apple Family 9", "TBDR", "Dynamic Caching", "Ray Tracing", "Mesh Shading"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 18
+    },
+    "memory": {
+      "type": "LPDDR5",
+      "maxCapacityGB": 36,
+      "bandwidthGBs": 150
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 3020,
+      "geekbench6MultiCore": 15050,
+      "cinebenchR23SingleCore": 1870,
+      "cinebenchR23MultiCore": 14800,
+      "metalScore": 52000
+    },
+    "devices": ["MacBook Pro 14\"", "MacBook Pro 16\""],
+    "highlights": ["最大36GB統合メモリ（Proシリーズ最大）", "3nmプロセスでの効率改善", "効率コア6つで長時間バッテリー"],
+    "color": "#45B7D1",
+    "description": "M3のProバリアント。3nm設計で効率コアを6つ搭載し、バッテリー効率とマルチコア性能のバランスを最適化。最大36GBの統合メモリを実現。"
+  },
+  {
+    "id": "m3-max",
+    "slug": "m3-max",
+    "name": "Apple M3 Max",
+    "series": "m",
+    "variant": "max",
+    "releaseDate": "2023-10",
+    "processNode": "3nm",
+    "transistors": "92 billion",
+    "cpu": {
+      "totalCores": 16,
+      "performanceCores": 12,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "4.05 GHz"
+    },
+    "gpu": {
+      "cores": 30,
+      "maxCores": 40,
+      "features": ["Apple Family 9", "TBDR", "Dynamic Caching", "Ray Tracing", "Mesh Shading"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 18
+    },
+    "memory": {
+      "type": "LPDDR5X",
+      "maxCapacityGB": 128,
+      "bandwidthGBs": 400
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 3035,
+      "geekbench6MultiCore": 21280,
+      "cinebenchR23SingleCore": 1875,
+      "cinebenchR23MultiCore": 21500,
+      "metalScore": 120000
+    },
+    "devices": ["MacBook Pro 14\"", "MacBook Pro 16\"", "Mac Studio"],
+    "highlights": ["最大40コアGPU", "最大128GB統合メモリ", "LPDDR5X採用で高速帯域"],
+    "color": "#45B7D1",
+    "description": "M3 Maxは16コアCPUと最大40コアGPUを搭載。LPDDR5Xメモリにより最大128GBの統合メモリと400 GB/sの帯域幅を実現し、3D制作やAI推論に卓越した性能を発揮。"
+  },
+  {
+    "id": "m3-ultra",
+    "slug": "m3-ultra",
+    "name": "Apple M3 Ultra",
+    "series": "m",
+    "variant": "ultra",
+    "releaseDate": "2025-03",
+    "processNode": "3nm",
+    "transistors": "184 billion",
+    "cpu": {
+      "totalCores": 32,
+      "performanceCores": 24,
+      "efficiencyCores": 8,
+      "maxClockSpeed": "4.05 GHz"
+    },
+    "gpu": {
+      "cores": 60,
+      "maxCores": 80,
+      "features": ["Apple Family 9", "TBDR", "Dynamic Caching", "Ray Tracing", "Mesh Shading", "UltraFusion"]
+    },
+    "neuralEngine": {
+      "cores": 32,
+      "tops": 36
+    },
+    "memory": {
+      "type": "LPDDR5X",
+      "maxCapacityGB": 192,
+      "bandwidthGBs": 800
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 3040,
+      "geekbench6MultiCore": 42500,
+      "cinebenchR23SingleCore": 1880,
+      "cinebenchR23MultiCore": 43000,
+      "metalScore": 235000
+    },
+    "devices": ["Mac Studio", "Mac Pro"],
+    "highlights": ["最大80コアGPU", "最大192GB統合メモリ", "36 TOPS Neural Engine"],
+    "color": "#45B7D1",
+    "description": "M3 Maxを2個UltraFusionで結合。32コアCPUと最大80コアGPUを搭載し、大規模AIモデルのトレーニングやプロフェッショナルな映像制作に対応する最高峰のチップ。"
+  },
+  {
+    "id": "m4",
+    "slug": "m4",
+    "name": "Apple M4",
+    "series": "m",
+    "variant": "base",
+    "releaseDate": "2024-05",
+    "processNode": "3nm 2nd gen",
+    "transistors": "28 billion",
+    "cpu": {
+      "totalCores": 10,
+      "performanceCores": 4,
+      "efficiencyCores": 6,
+      "maxClockSpeed": "4.4 GHz"
+    },
+    "gpu": {
+      "cores": 10,
+      "features": ["Apple Family 10", "TBDR", "Dynamic Caching", "Ray Tracing", "Mesh Shading", "Neural Accelerator"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 38
+    },
+    "memory": {
+      "type": "LPDDR5X",
+      "maxCapacityGB": 32,
+      "bandwidthGBs": 120
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 3640,
+      "geekbench6MultiCore": 14820,
+      "cinebenchR23SingleCore": 2280,
+      "cinebenchR23MultiCore": 14200,
+      "metalScore": 45000
+    },
+    "devices": ["iPad Pro 11\"", "iPad Pro 13\"", "MacBook Pro 14\"", "Mac mini", "iMac 24\""],
+    "highlights": ["38 TOPS Neural Engine（M3比2倍以上）", "GPU Neural Accelerator統合", "Apple Intelligence完全対応"],
+    "color": "#96CEB4",
+    "description": "第2世代3nmプロセスを採用したM4は、AIパフォーマンスを大幅に向上。38 TOPSのNeural EngineとGPU内蔵Neural AcceleratorによりApple Intelligenceを完全サポート。"
+  },
+  {
+    "id": "m4-pro",
+    "slug": "m4-pro",
+    "name": "Apple M4 Pro",
+    "series": "m",
+    "variant": "pro",
+    "releaseDate": "2024-11",
+    "processNode": "3nm 2nd gen",
+    "transistors": "66 billion",
+    "cpu": {
+      "totalCores": 14,
+      "performanceCores": 10,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "4.4 GHz"
+    },
+    "gpu": {
+      "cores": 16,
+      "maxCores": 20,
+      "features": ["Apple Family 10", "TBDR", "Dynamic Caching", "Ray Tracing", "Mesh Shading", "Neural Accelerator"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 38
+    },
+    "memory": {
+      "type": "LPDDR5X",
+      "maxCapacityGB": 48,
+      "bandwidthGBs": 273
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 3720,
+      "geekbench6MultiCore": 22900,
+      "cinebenchR23SingleCore": 2350,
+      "cinebenchR23MultiCore": 22500,
+      "metalScore": 72000
+    },
+    "devices": ["MacBook Pro 14\"", "MacBook Pro 16\"", "Mac mini"],
+    "highlights": ["最大48GB統合メモリ", "273 GB/sメモリ帯域", "Thunderbolt 5対応"],
+    "color": "#96CEB4",
+    "description": "M4 ProはThunderbolt 5をサポートし、最大48GBの統合メモリと273 GB/sの帯域幅を提供。14コアCPUと最大20コアGPUでプロフェッショナルワークフローに対応。"
+  },
+  {
+    "id": "m4-max",
+    "slug": "m4-max",
+    "name": "Apple M4 Max",
+    "series": "m",
+    "variant": "max",
+    "releaseDate": "2024-11",
+    "processNode": "3nm 2nd gen",
+    "transistors": "92 billion",
+    "cpu": {
+      "totalCores": 16,
+      "performanceCores": 12,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "4.4 GHz"
+    },
+    "gpu": {
+      "cores": 32,
+      "maxCores": 40,
+      "features": ["Apple Family 10", "TBDR", "Dynamic Caching", "Ray Tracing", "Mesh Shading", "Neural Accelerator"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 38
+    },
+    "memory": {
+      "type": "LPDDR5X",
+      "maxCapacityGB": 128,
+      "bandwidthGBs": 546
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 3740,
+      "geekbench6MultiCore": 24200,
+      "cinebenchR23SingleCore": 2370,
+      "cinebenchR23MultiCore": 24500,
+      "metalScore": 145000
+    },
+    "devices": ["MacBook Pro 14\"", "MacBook Pro 16\"", "Mac Studio"],
+    "highlights": ["546 GB/sメモリ帯域（M3 Max比36%向上）", "最大40コアGPU", "最大128GB統合メモリ"],
+    "color": "#96CEB4",
+    "description": "M4 Maxは業界最高水準の546 GB/sメモリ帯域幅を誇り、最大40コアGPUと128GBの統合メモリで、大規模な機械学習や高解像度映像制作に対応するパワーハウス。"
+  },
+  {
+    "id": "m5",
+    "slug": "m5",
+    "name": "Apple M5",
+    "series": "m",
+    "variant": "base",
+    "releaseDate": "2025-10",
+    "processNode": "3nm Fusion",
+    "transistors": "30 billion",
+    "cpu": {
+      "totalCores": 10,
+      "performanceCores": 4,
+      "efficiencyCores": 6,
+      "maxClockSpeed": "4.7 GHz"
+    },
+    "gpu": {
+      "cores": 10,
+      "features": ["Apple Family 11", "TBDR", "Dynamic Caching", "Ray Tracing", "Mesh Shading", "Neural Accelerator 2nd gen"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 45
+    },
+    "memory": {
+      "type": "LPDDR5X",
+      "maxCapacityGB": 32,
+      "bandwidthGBs": 153.6
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 4100,
+      "geekbench6MultiCore": 16800,
+      "cinebenchR23SingleCore": 2650,
+      "cinebenchR23MultiCore": 16200,
+      "metalScore": 58000
+    },
+    "devices": ["MacBook Pro 14\"", "MacBook Air 13\"", "MacBook Air 15\""],
+    "highlights": ["SuperコアCPU 採用", "第2世代GPU Neural Accelerator", "M4比約15%高速なCPU"],
+    "color": "#DDA0DD",
+    "description": "M5はSuperコアと呼ばれる新世代の高性能コアを採用。第2世代Neural AcceleratorをGPUに統合し、AI推論性能をさらに向上。153.6 GB/sのメモリ帯域幅を実現。"
+  },
+  {
+    "id": "m5-pro",
+    "slug": "m5-pro",
+    "name": "Apple M5 Pro",
+    "series": "m",
+    "variant": "pro",
+    "releaseDate": "2026-03",
+    "processNode": "3nm Fusion",
+    "transistors": "75 billion",
+    "cpu": {
+      "totalCores": 18,
+      "performanceCores": 6,
+      "efficiencyCores": 12,
+      "maxClockSpeed": "4.7 GHz"
+    },
+    "gpu": {
+      "cores": 20,
+      "features": ["Apple Family 11", "TBDR", "Dynamic Caching", "Ray Tracing", "Mesh Shading", "Neural Accelerator 2nd gen"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 45
+    },
+    "memory": {
+      "type": "LPDDR5X",
+      "maxCapacityGB": 64,
+      "bandwidthGBs": 307
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 4150,
+      "geekbench6MultiCore": 30500,
+      "cinebenchR23SingleCore": 2700,
+      "cinebenchR23MultiCore": 29800,
+      "metalScore": 95000
+    },
+    "devices": ["MacBook Pro 14\"", "MacBook Pro 16\""],
+    "highlights": ["Fusion Architecture採用の2ダイ構成", "6つのSuperコア", "最大64GB統合メモリ"],
+    "color": "#DDA0DD",
+    "description": "Fusion Architectureと呼ばれる2ダイ構成を採用したM5 Pro。6つのSuperコアを含む18コアCPUと、307 GB/sの高速メモリ帯域で次世代のプロ向け性能を実現。"
+  },
+  {
+    "id": "m5-max",
+    "slug": "m5-max",
+    "name": "Apple M5 Max",
+    "series": "m",
+    "variant": "max",
+    "releaseDate": "2026-03",
+    "processNode": "3nm Fusion",
+    "transistors": "115 billion",
+    "cpu": {
+      "totalCores": 18,
+      "performanceCores": 6,
+      "efficiencyCores": 12,
+      "maxClockSpeed": "4.7 GHz"
+    },
+    "gpu": {
+      "cores": 40,
+      "features": ["Apple Family 11", "TBDR", "Dynamic Caching", "Ray Tracing", "Mesh Shading", "Neural Accelerator 2nd gen"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 45
+    },
+    "memory": {
+      "type": "LPDDR5X",
+      "maxCapacityGB": 128,
+      "bandwidthGBs": 614
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 4160,
+      "geekbench6MultiCore": 32000,
+      "cinebenchR23SingleCore": 2710,
+      "cinebenchR23MultiCore": 31500,
+      "metalScore": 185000
+    },
+    "devices": ["MacBook Pro 16\"", "Mac Studio"],
+    "highlights": ["614 GB/sメモリ帯域（シリーズ最高）", "最大40コアGPU", "Fusion Architecture 2ダイ"],
+    "color": "#DDA0DD",
+    "description": "M5シリーズの最上位Maxモデル。Fusion Architectureにより614 GB/sの業界最高水準のメモリ帯域を実現し、最大128GBの統合メモリと40コアGPUで究極のパフォーマンスを提供。"
+  },
+  {
+    "id": "a15",
+    "slug": "a15",
+    "name": "Apple A15 Bionic",
+    "series": "a",
+    "variant": "base",
+    "releaseDate": "2021-09",
+    "processNode": "5nm",
+    "transistors": "15 billion",
+    "cpu": {
+      "totalCores": 6,
+      "performanceCores": 2,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "3.22 GHz"
+    },
+    "gpu": {
+      "cores": 4,
+      "maxCores": 5,
+      "features": ["Apple Family 7", "TBDR"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 15.8
+    },
+    "memory": {
+      "type": "LPDDR4X",
+      "maxCapacityGB": 6,
+      "bandwidthGBs": 51.2
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 1726,
+      "geekbench6MultiCore": 4536,
+      "antutu": 780000,
+      "metalScore": 14000
+    },
+    "devices": ["iPhone 13", "iPhone 13 mini", "iPhone 13 Pro", "iPhone 13 Pro Max", "iPhone SE 3rd gen", "iPad mini 6th gen"],
+    "highlights": ["5コアGPU（ProモデルのみStandard 4コア）", "15.8 TOPS Neural Engine", "ProRes動画録画対応（iPhone 13 Pro）"],
+    "color": "#FFB347",
+    "description": "iPhone 13シリーズに搭載されたA15 Bionicは、前世代比でCPU性能50%、GPU性能30%の向上を実現。ProモデルはProRes録画をサポートし、映像制作の可能性を拡張した。"
+  },
+  {
+    "id": "a16",
+    "slug": "a16",
+    "name": "Apple A16 Bionic",
+    "series": "a",
+    "variant": "base",
+    "releaseDate": "2022-09",
+    "processNode": "4nm",
+    "transistors": "16 billion",
+    "cpu": {
+      "totalCores": 6,
+      "performanceCores": 2,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "3.46 GHz"
+    },
+    "gpu": {
+      "cores": 5,
+      "features": ["Apple Family 8", "TBDR", "Hardware Ray Tracing"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 17
+    },
+    "memory": {
+      "type": "LPDDR5",
+      "maxCapacityGB": 6,
+      "bandwidthGBs": 51.2
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 2169,
+      "geekbench6MultiCore": 5378,
+      "antutu": 900000,
+      "metalScore": 19000
+    },
+    "devices": ["iPhone 14 Pro", "iPhone 14 Pro Max", "iPad 11th gen"],
+    "highlights": ["ハードウェアレイトレーシング対応", "4nm TSMC (実質第2世代5nm)", "最高峰のスマートフォンチップ（2022年）"],
+    "color": "#87CEEB",
+    "description": "iPhone 14 ProシリーズのためのA16 Bionicは、ハードウェアレイトレーシングをスマートフォン初めてサポート。Dynamic Islandの実現を支える高速画像処理システムも搭載。"
+  },
+  {
+    "id": "a17-pro",
+    "slug": "a17-pro",
+    "name": "Apple A17 Pro",
+    "series": "a",
+    "variant": "pro",
+    "releaseDate": "2023-09",
+    "processNode": "3nm",
+    "transistors": "19 billion",
+    "cpu": {
+      "totalCores": 6,
+      "performanceCores": 2,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "3.78 GHz"
+    },
+    "gpu": {
+      "cores": 6,
+      "features": ["Apple Family 9", "TBDR", "Hardware Ray Tracing", "Mesh Shading", "MetalFX Upscaling"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 35
+    },
+    "memory": {
+      "type": "LPDDR5",
+      "maxCapacityGB": 8,
+      "bandwidthGBs": 68.25
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 2884,
+      "geekbench6MultiCore": 7236,
+      "antutu": 1570000,
+      "metalScore": 26000
+    },
+    "devices": ["iPhone 15 Pro", "iPhone 15 Pro Max", "iPad mini 7th gen"],
+    "highlights": ["スマートフォン初の3nmチップ", "35 TOPS Neural Engine（A16比2倍以上）", "コンソール級GPU性能"],
+    "color": "#98D8C8",
+    "description": "スマートフォン初の3nmプロセス採用チップ。6コアGPUとMetalFX Upscalingにより、コンソール向けゲームタイトルの移植を実現するグラフィック性能を達成した画期的なプロセッサ。"
+  },
+  {
+    "id": "a18",
+    "slug": "a18",
+    "name": "Apple A18",
+    "series": "a",
+    "variant": "base",
+    "releaseDate": "2024-09",
+    "processNode": "3nm 2nd gen",
+    "transistors": "16 billion",
+    "cpu": {
+      "totalCores": 6,
+      "performanceCores": 2,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "4.05 GHz"
+    },
+    "gpu": {
+      "cores": 4,
+      "maxCores": 5,
+      "features": ["Apple Family 10", "TBDR", "Hardware Ray Tracing", "Mesh Shading", "Neural Accelerator"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 35
+    },
+    "memory": {
+      "type": "LPDDR5X",
+      "maxCapacityGB": 8,
+      "bandwidthGBs": 68.25
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 3295,
+      "geekbench6MultiCore": 8072,
+      "antutu": 1700000,
+      "metalScore": 30000
+    },
+    "devices": ["iPhone 16", "iPhone 16 Plus", "iPhone 16e"],
+    "highlights": ["Apple Intelligence対応（標準モデル初）", "GPU Neural Accelerator", "カメラコントロールボタン対応"],
+    "color": "#F7DC6F",
+    "description": "iPhone 16シリーズに搭載されたA18は、標準モデルとして初めてApple Intelligenceに対応。GPU Neural AcceleratorとLPDDR5Xメモリで強化されたAI処理能力を提供。"
+  },
+  {
+    "id": "a18-pro",
+    "slug": "a18-pro",
+    "name": "Apple A18 Pro",
+    "series": "a",
+    "variant": "pro",
+    "releaseDate": "2024-09",
+    "processNode": "3nm 2nd gen",
+    "transistors": "16 billion",
+    "cpu": {
+      "totalCores": 6,
+      "performanceCores": 2,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "4.05 GHz"
+    },
+    "gpu": {
+      "cores": 6,
+      "features": ["Apple Family 10", "TBDR", "Hardware Ray Tracing", "Mesh Shading", "Neural Accelerator", "ProRes加速"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 35
+    },
+    "memory": {
+      "type": "LPDDR5X",
+      "maxCapacityGB": 8,
+      "bandwidthGBs": 68.25
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 3350,
+      "geekbench6MultiCore": 8290,
+      "antutu": 1800000,
+      "metalScore": 34000
+    },
+    "devices": ["iPhone 16 Pro", "iPhone 16 Pro Max"],
+    "highlights": ["6コアGPU（ProRes動画撮影対応）", "最大4K120fps動画録画", "Apple Intelligence Pro機能対応"],
+    "color": "#F7DC6F",
+    "description": "A18 ProはProRes動画の4K120fps録画に対応し、iPhoneの映像制作能力を新次元へ。6コアGPUとApple Intelligence Pro機能により、プロカメラマンのワークフローをスマートフォンで実現。"
+  },
+  {
+    "id": "a19",
+    "slug": "a19",
+    "name": "Apple A19",
+    "series": "a",
+    "variant": "base",
+    "releaseDate": "2025-09",
+    "processNode": "3nm N3P",
+    "transistors": "18 billion",
+    "cpu": {
+      "totalCores": 6,
+      "performanceCores": 2,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "4.3 GHz"
+    },
+    "gpu": {
+      "cores": 4,
+      "maxCores": 5,
+      "features": ["Apple Family 11", "TBDR", "Hardware Ray Tracing", "Mesh Shading", "Neural Accelerator 2nd gen"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 45
+    },
+    "memory": {
+      "type": "LPDDR5X",
+      "maxCapacityGB": 8,
+      "bandwidthGBs": 68.25
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 3700,
+      "geekbench6MultiCore": 9200,
+      "antutu": 2000000,
+      "metalScore": 38000
+    },
+    "devices": ["iPhone 17", "iPhone 17e"],
+    "highlights": ["TSMC N3Pプロセス採用", "45 TOPS Neural Engine", "Apple Intelligence次世代機能"],
+    "color": "#BB8FCE",
+    "description": "TSMCの最新N3Pプロセスを採用したA19は、第2世代Neural AcceleratorとApple Intelligence機能の強化により、AIアシスタントとしての能力を飛躍的に向上させた。"
+  },
+  {
+    "id": "a19-pro",
+    "slug": "a19-pro",
+    "name": "Apple A19 Pro",
+    "series": "a",
+    "variant": "pro",
+    "releaseDate": "2025-09",
+    "processNode": "3nm N3P",
+    "transistors": "20 billion",
+    "cpu": {
+      "totalCores": 6,
+      "performanceCores": 2,
+      "efficiencyCores": 4,
+      "maxClockSpeed": "4.4 GHz"
+    },
+    "gpu": {
+      "cores": 6,
+      "features": ["Apple Family 11", "TBDR", "Hardware Ray Tracing", "Mesh Shading", "Neural Accelerator 2nd gen", "ProRes加速"]
+    },
+    "neuralEngine": {
+      "cores": 16,
+      "tops": 45
+    },
+    "memory": {
+      "type": "LPDDR5X",
+      "maxCapacityGB": 12,
+      "bandwidthGBs": 76.8
+    },
+    "benchmarks": {
+      "geekbench6SingleCore": 3800,
+      "geekbench6MultiCore": 9500,
+      "antutu": 2150000,
+      "metalScore": 42000
+    },
+    "devices": ["iPhone 17 Pro", "iPhone 17 Pro Max", "iPhone Air"],
+    "highlights": ["最大12GB RAM（スマートフォン史上最多クラス）", "45 TOPS Neural Engine", "iPhone Air対応（超薄型フォームファクター）"],
+    "color": "#BB8FCE",
+    "description": "A19 Proは最大12GBのLPDDR5Xメモリを搭載し、iPhoneとして最大のRAMを実現。6コアGPUとProRes動画エンジンで映像制作能力を引き続き強化し、iPhone Airの超薄型設計にも対応。"
+  }
+]
