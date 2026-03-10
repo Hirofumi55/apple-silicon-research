@@ -1,7 +1,8 @@
 {
-  "name": "apple-silicon-research",
+  "name": "apple-silicon-lab",
+  "description": "Apple Siliconチップ（M/Aシリーズ）のスペック比較・ベンチマーク解説サイト",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",

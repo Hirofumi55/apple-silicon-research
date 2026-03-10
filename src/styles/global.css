@@ -107,6 +107,11 @@ body {
   50% { opacity: 1; }
 }
 
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
 .animate-fade-in-up {
   animation: fade-in-up 0.8s ease forwards;
 }
@@ -250,6 +255,21 @@ body {
    ============================================ */
 
 @media (max-width: 640px) {
+  /* 比較ページのチャートビュー：縦積みに変更 */
+  .compare-chart-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ヒーロービジュアルをモバイルで非表示 */
+  .hero-visual {
+    display: none !important;
+  }
+
+  /* ヒーローグリッドをモバイルで1カラム */
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+
   .hide-mobile {
     display: none !important;
   }

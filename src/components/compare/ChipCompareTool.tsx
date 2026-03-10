@@ -413,7 +413,7 @@ export default function ChipCompareTool({ chips }: Props) {
 
       {/* グラフビュー */}
       {selected.length > 0 && viewMode === 'chart' && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '24px', alignItems: 'start' }}>
+        <div className="compare-chart-grid" style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '24px', alignItems: 'start' }}>
           {/* レーダーチャート */}
           <div style={{ padding: '24px', background: 'var(--color-surface)', borderRadius: '16px', border: '1px solid var(--color-border)', minWidth: '240px' }}>
             <h4 style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '12px', textAlign: 'center', letterSpacing: '0.5px' }}>総合性能レーダー</h4>

@@ -16,11 +16,28 @@ const byYear = sorted.reduce<Record<string, ChipSpec[]>>((acc, chip) => {
 }, {});
 
 const years = Object.keys(byYear).sort();
+
+const timelineJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  name: 'Apple Silicon 進化タイムライン',
+  description: 'M1（2020年）からM5 Max（2026年）、A15〜A19 Proまで全チップの発売歴史',
+  url: 'https://apple-silicon-research.pages.dev/timeline',
+  inLanguage: 'ja',
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'ホーム', item: 'https://apple-silicon-research.pages.dev' },
+      { '@type': 'ListItem', position: 2, name: 'タイムライン', item: 'https://apple-silicon-research.pages.dev/timeline' },
+    ],
+  },
+};
 ---
 
 <BaseLayout
   title="Apple Silicon タイムライン"
   description="Apple Silicon進化の歴史。M1（2020年）からM5 Max（2026年）、A15（2021年）からA19 Pro（2025年）まで、全チップの発売時期と特徴をタイムラインで確認。"
+  jsonLd={timelineJsonLd}
 >
   <section style="
     padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 48px) 0;

@@ -24,100 +24,109 @@ const cpuImprovement = Math.round(
     min-height: 90vh;
     display: flex;
     align-items: center;
-    justify-content: center;
     overflow: hidden;
     padding: 80px clamp(16px, 5vw, 48px);
   ">
     <!-- パーティクル背景 -->
-    <div style="position: absolute; inset: 0; pointer-events: none;" id="hero-particles">
-      {Array.from({length: 20}).map((_, i) => (
+    <div style="position: absolute; inset: 0; pointer-events: none;">
+      {[
+        {top:'12%',left:'8%',size:2.4,delay:0},{top:'75%',left:'5%',size:1.8,delay:1.2},
+        {top:'30%',left:'15%',size:1.2,delay:0.8},{top:'55%',left:'22%',size:2,delay:2},
+        {top:'85%',left:'35%',size:1.5,delay:0.4},{top:'18%',left:'45%',size:1,delay:1.6},
+        {top:'65%',left:'55%',size:2.2,delay:0.2},{top:'40%',left:'72%',size:1.4,delay:1.8},
+        {top:'10%',left:'80%',size:1.8,delay:0.6},{top:'90%',left:'88%',size:1.2,delay:1.4},
+        {top:'50%',left:'92%',size:2,delay:0},{top:'25%',left:'60%',size:1.6,delay:2.2},
+      ].map(p => (
         <div style={`
           position: absolute;
-          width: ${Math.random() * 3 + 1}px;
-          height: ${Math.random() * 3 + 1}px;
-          background: #0071e3;
-          border-radius: 50%;
-          top: ${Math.random() * 100}%;
-          left: ${Math.random() * 100}%;
-          opacity: ${Math.random() * 0.4 + 0.1};
-          animation: float ${3 + Math.random() * 4}s ease-in-out infinite;
-          animation-delay: ${Math.random() * 3}s;
+          width: ${p.size}px; height: ${p.size}px;
+          background: #0071e3; border-radius: 50%;
+          top: ${p.top}; left: ${p.left};
+          opacity: 0.35;
+          animation: float ${3.5 + p.delay}s ease-in-out ${p.delay}s infinite;
         `}></div>
       ))}
     </div>
 
-    <!-- グラデーションオーバーレイ -->
+    <!-- 背景グロー -->
     <div style="
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 800px;
-      height: 500px;
-      background: radial-gradient(ellipse at center, rgba(0, 113, 227, 0.12) 0%, transparent 70%);
-      pointer-events: none;
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 60% 50% at 30% 50%, rgba(0,113,227,0.1) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 60% at 75% 50%, rgba(52,170,255,0.06) 0%, transparent 70%);
     "></div>
 
-    <div style="max-width: 900px; text-align: center; position: relative; z-index: 1;">
-      <!-- バッジ -->
-      <div style="
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 16px;
-        border-radius: 20px;
-        background: rgba(0, 113, 227, 0.1);
-        border: 1px solid rgba(0, 113, 227, 0.3);
-        margin-bottom: 32px;
-        animation: fade-in-up 0.6s ease forwards;
-      ">
-        <div style="width: 6px; height: 6px; border-radius: 50%; background: #0071e3; animation: glow-pulse 2s ease-in-out infinite;"></div>
-        <span style="font-size: 13px; color: #0071e3; font-weight: 500;">M5 Pro / Max 発表 — 2026年3月</span>
-      </div>
+    <div style="
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 64px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    " class="hero-grid">
 
-      <!-- メインタイトル -->
-      <h1 style="
-        font-size: clamp(40px, 8vw, 88px);
-        font-weight: 800;
-        line-height: 1.0;
-        letter-spacing: -3px;
-        margin-bottom: 24px;
-        animation: fade-in-up 0.7s ease 0.1s forwards;
-        opacity: 0;
-      ">
-        <span style="color: var(--color-text);">Apple Silicon</span><br>
-        <span class="text-gradient-accent">の全貌</span>
-      </h1>
-
-      <p style="
-        font-size: clamp(16px, 2.5vw, 20px);
-        color: var(--color-text-secondary);
-        max-width: 600px;
-        margin: 0 auto 48px;
-        line-height: 1.7;
-        animation: fade-in-up 0.7s ease 0.2s forwards;
-        opacity: 0;
-      ">
-        M1からM5、A15からA19まで。<br>
-        全チップのスペック・ベンチマーク・アーキテクチャを徹底比較。
-      </p>
-
-      <!-- CTAボタン -->
-      <div style="
-        display: flex;
-        gap: 16px;
-        justify-content: center;
-        flex-wrap: wrap;
-        animation: fade-in-up 0.7s ease 0.3s forwards;
-        opacity: 0;
-      ">
-        <a href="/compare" style="
+      <!-- 左: テキスト -->
+      <div>
+        <!-- バッジ -->
+        <div style="
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          padding: 14px 28px;
-          background: var(--color-accent);
-          color: white;
+          padding: 6px 16px;
+          border-radius: 20px;
+          background: rgba(0, 113, 227, 0.1);
+          border: 1px solid rgba(0, 113, 227, 0.3);
+          margin-bottom: 32px;
+          animation: fade-in-up 0.6s ease forwards;
+        ">
+          <div style="width: 6px; height: 6px; border-radius: 50%; background: #0071e3; animation: glow-pulse 2s ease-in-out infinite;"></div>
+          <span style="font-size: 13px; color: #0071e3; font-weight: 500;">M5 Pro / Max 発表 — 2026年3月</span>
+        </div>
+
+        <!-- メインタイトル -->
+        <h1 style="
+          font-size: clamp(40px, 6vw, 80px);
+          font-weight: 800;
+          line-height: 1.0;
+          letter-spacing: -3px;
+          margin-bottom: 24px;
+          animation: fade-in-up 0.7s ease 0.1s forwards;
+          opacity: 0;
+        ">
+          <span style="color: var(--color-text);">Apple Silicon</span><br>
+          <span class="text-gradient-accent">の全貌</span>
+        </h1>
+
+        <p style="
+          font-size: clamp(15px, 2vw, 18px);
+          color: var(--color-text-secondary);
+          max-width: 520px;
+          margin-bottom: 48px;
+          line-height: 1.7;
+          animation: fade-in-up 0.7s ease 0.2s forwards;
+          opacity: 0;
+        ">
+          M1からM5、A15からA19まで。<br>
+          全チップのスペック・ベンチマーク・アーキテクチャを徹底比較。
+        </p>
+
+        <!-- CTAボタン -->
+        <div style="
+          display: flex;
+          gap: 16px;
+          flex-wrap: wrap;
+          animation: fade-in-up 0.7s ease 0.3s forwards;
+          opacity: 0;
+        ">
+          <a href="/compare" style="
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: var(--color-accent);
+            color: white;
           border-radius: 980px;
           text-decoration: none;
           font-size: 15px;
@@ -146,6 +155,102 @@ const cpuImprovement = Math.round(
         " class="cta-secondary">
           Mシリーズを見る
         </a>
+        </div>
+      </div>
+
+      <!-- 右: チップビジュアル（デスクトップのみ） -->
+      <div class="hero-visual" style="animation: fade-in 1s ease 0.4s forwards; opacity: 0;">
+        <div style="position: relative; width: 360px; height: 360px;">
+          <!-- 同心円リング -->
+          <svg style="position: absolute; inset: 0;" width="360" height="360" viewBox="0 0 360 360" fill="none">
+            <circle cx="180" cy="180" r="170" stroke="#0071e3" stroke-opacity="0.06" stroke-width="1"/>
+            <circle cx="180" cy="180" r="140" stroke="#0071e3" stroke-opacity="0.09" stroke-width="1"/>
+            <circle cx="180" cy="180" r="110" stroke="#0071e3" stroke-opacity="0.12" stroke-width="1"/>
+            <!-- 回転する点線リング -->
+            <circle cx="180" cy="180" r="155" stroke="#0071e3" stroke-opacity="0.2" stroke-width="1" stroke-dasharray="4 12" style="animation: spin-slow 20s linear infinite; transform-origin: 180px 180px;"/>
+            <circle cx="180" cy="180" r="125" stroke="#34aaff" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="6 18" style="animation: spin-slow 30s linear infinite reverse; transform-origin: 180px 180px;"/>
+            <!-- 軌道上の点 -->
+            <circle cx="180" cy="25" r="4" fill="#0071e3" opacity="0.7" style="animation: spin-slow 20s linear infinite; transform-origin: 180px 180px;"/>
+            <circle cx="335" cy="180" r="3" fill="#34aaff" opacity="0.7" style="animation: spin-slow 30s linear infinite reverse; transform-origin: 180px 180px;"/>
+          </svg>
+
+          <!-- 中央チップ -->
+          <div style="
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px; height: 180px;
+            border-radius: 28px;
+            background: rgba(0,113,227,0.08);
+            border: 1.5px solid rgba(0,113,227,0.3);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 60px rgba(0,113,227,0.12), 0 0 120px rgba(0,113,227,0.06);
+            animation: float 5s ease-in-out infinite;
+          ">
+            <svg width="140" height="140" viewBox="0 0 140 140" fill="none">
+              <!-- 外枠 -->
+              <rect x="10" y="10" width="120" height="120" rx="10" stroke="#0071e3" stroke-width="0.8" stroke-opacity="0.5"/>
+              <!-- 内部ブロック -->
+              <rect x="25" y="25" width="90" height="90" rx="6" fill="#0071e310" stroke="#0071e3" stroke-width="0.8"/>
+              <!-- グリッド -->
+              <line x1="25" y1="55" x2="115" y2="55" stroke="#0071e3" stroke-opacity="0.25" stroke-width="0.5"/>
+              <line x1="25" y1="70" x2="115" y2="70" stroke="#0071e3" stroke-opacity="0.35" stroke-width="0.5"/>
+              <line x1="25" y1="85" x2="115" y2="85" stroke="#0071e3" stroke-opacity="0.25" stroke-width="0.5"/>
+              <line x1="55" y1="25" x2="55" y2="115" stroke="#0071e3" stroke-opacity="0.25" stroke-width="0.5"/>
+              <line x1="70" y1="25" x2="70" y2="115" stroke="#0071e3" stroke-opacity="0.35" stroke-width="0.5"/>
+              <line x1="85" y1="25" x2="85" y2="115" stroke="#0071e3" stroke-opacity="0.25" stroke-width="0.5"/>
+              <!-- コアブロック -->
+              <rect x="40" y="40" width="25" height="25" rx="3" fill="#0071e320" stroke="#0071e3" stroke-width="0.8"/>
+              <rect x="75" y="40" width="25" height="25" rx="3" fill="#0071e320" stroke="#0071e3" stroke-width="0.8"/>
+              <rect x="40" y="75" width="25" height="25" rx="3" fill="#0071e320" stroke="#0071e3" stroke-width="0.8"/>
+              <rect x="75" y="75" width="25" height="25" rx="3" fill="#0071e320" stroke="#0071e3" stroke-width="0.8"/>
+              <!-- センタードット -->
+              <circle cx="70" cy="70" r="8" fill="#0071e340"/>
+              <circle cx="70" cy="70" r="4" fill="#0071e3" opacity="0.9"/>
+              <circle cx="70" cy="70" r="1.5" fill="white"/>
+              <!-- 接続ピン -->
+              <rect x="3" y="32" width="7" height="3" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="3" y="50" width="7" height="3" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="3" y="68" width="7" height="3" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="3" y="86" width="7" height="3" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="130" y="32" width="7" height="3" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="130" y="50" width="7" height="3" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="130" y="68" width="7" height="3" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="130" y="86" width="7" height="3" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="32" y="3" width="3" height="7" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="50" y="3" width="3" height="7" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="68" y="3" width="3" height="7" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="86" y="3" width="3" height="7" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="32" y="130" width="3" height="7" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="50" y="130" width="3" height="7" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="68" y="130" width="3" height="7" rx="1" fill="#0071e3" opacity="0.5"/>
+              <rect x="86" y="130" width="3" height="7" rx="1" fill="#0071e3" opacity="0.5"/>
+            </svg>
+
+            <!-- グローオーバーレイ -->
+            <div style="
+              position: absolute; inset: 0; border-radius: 28px;
+              background: radial-gradient(circle, rgba(0,113,227,0.15) 0%, transparent 70%);
+              animation: glow-pulse 3s ease-in-out infinite;
+            "></div>
+          </div>
+
+          <!-- ラベルバッジ -->
+          <div style="
+            position: absolute; top: 20px; right: 0;
+            padding: 6px 14px; border-radius: 20px;
+            background: rgba(0,113,227,0.12); border: 1px solid rgba(0,113,227,0.3);
+            font-size: 12px; font-weight: 600; color: #0071e3;
+            animation: fade-in-up 0.8s ease 0.6s forwards; opacity: 0;
+          ">M5 Max</div>
+          <div style="
+            position: absolute; bottom: 30px; left: 0;
+            padding: 6px 14px; border-radius: 20px;
+            background: rgba(191,90,242,0.12); border: 1px solid rgba(191,90,242,0.3);
+            font-size: 12px; font-weight: 600; color: #bf5af2;
+            animation: fade-in-up 0.8s ease 0.8s forwards; opacity: 0;
+          ">A19 Pro</div>
+        </div>
       </div>
     </div>
   </section>

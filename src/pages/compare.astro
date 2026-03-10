@@ -5,11 +5,29 @@ import type { ChipSpec } from '../types/chip';
 import chipsData from '../data/chips.json';
 
 const chips = chipsData as ChipSpec[];
+
+const compareJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Apple Silicon チップ比較ツール',
+  description: 'M1〜M5・A15〜A19から最大3チップを選択してCPU/GPU/Neural Engineをグラフ比較',
+  url: 'https://apple-silicon-research.pages.dev/compare',
+  inLanguage: 'ja',
+  applicationCategory: 'UtilitiesApplication',
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'ホーム', item: 'https://apple-silicon-research.pages.dev' },
+      { '@type': 'ListItem', position: 2, name: '比較ツール', item: 'https://apple-silicon-research.pages.dev/compare' },
+    ],
+  },
+};
 ---
 
 <BaseLayout
   title="チップ比較ツール"
   description="Apple Silicon チップ比較ツール。M1〜M5・A15〜A19から最大3チップを選択し、CPU/GPU/Neural Engine/メモリをレーダーチャートと棒グラフで比較。"
+  jsonLd={compareJsonLd}
 >
   <section style="
     padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 48px) 0;

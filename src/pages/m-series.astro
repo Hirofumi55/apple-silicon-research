@@ -15,11 +15,37 @@ const generations = [
   { gen: 'M4', chips: mChips.filter(c => c.id.startsWith('m4')), year: '2024' },
   { gen: 'M5', chips: mChips.filter(c => c.id.startsWith('m5')), year: '2025-2026' },
 ];
+
+const mSeriesJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Apple Mシリーズ チップ比較',
+  description: 'Apple M1〜M5 MaxまでMacシリーズ向けApple Siliconチップのスペック・ベンチマーク完全比較。',
+  url: 'https://apple-silicon-research.pages.dev/m-series',
+  inLanguage: 'ja',
+  about: {
+    '@type': 'ItemList',
+    itemListElement: mChips.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: c.name,
+      url: `https://apple-silicon-research.pages.dev/chip/${c.slug}`,
+    })),
+  },
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'ホーム', item: 'https://apple-silicon-research.pages.dev' },
+      { '@type': 'ListItem', position: 2, name: 'Mシリーズ', item: 'https://apple-silicon-research.pages.dev/m-series' },
+    ],
+  },
+};
 ---
 
 <BaseLayout
   title="Mシリーズ比較"
   description="Apple M1〜M5 Maxまで全Mシリーズチップのスペック・ベンチマーク完全比較。CPU/GPU/Neural Engineコア数、メモリ帯域、ベンチマークスコアを一覧で確認。"
+  jsonLd={mSeriesJsonLd}
 >
   <!-- ページヘッダー -->
   <section style="
