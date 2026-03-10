@@ -79,7 +79,7 @@ export function BenchmarkBarChart({ chips }: Props) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
       {/* Mシリーズ Geekbench 6 */}
-      <div>
+      {mChipData.length > 0 && <div>
         <h3 style={{
           fontSize: '14px',
           fontWeight: 600,
@@ -131,10 +131,10 @@ export function BenchmarkBarChart({ chips }: Props) {
             <span style={{ fontSize: '11px', color: 'var(--color-text-secondary)' }}>マルチコア</span>
           </div>
         </div>
-      </div>
+      </div>}
 
       {/* Aシリーズ AnTuTu */}
-      <div>
+      {aChipData.length > 0 && <div>
         <h3 style={{
           fontSize: '14px',
           fontWeight: 600,
@@ -172,7 +172,7 @@ export function BenchmarkBarChart({ chips }: Props) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </div>
+      </div>}
     </div>
   );
 }

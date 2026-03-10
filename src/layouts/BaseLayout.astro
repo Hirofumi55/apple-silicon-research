@@ -18,6 +18,12 @@ const {
   jsonLd,
 } = Astro.props;
 
+// og:image を絶対URLに変換（SNSクローラー対応）
+const siteBase = Astro.site ?? new URL('https://apple-silicon-research.pages.dev');
+const ogImageAbsolute = ogImage.startsWith('http')
+  ? ogImage
+  : new URL(ogImage, siteBase).toString();
+
 // デフォルトのサイト構造化データ
 const defaultJsonLd = {
   '@context': 'https://schema.org',
@@ -54,7 +60,7 @@ const fullTitle = title === 'Apple Silicon Lab'
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={ogImageAbsolute} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="ja_JP" />
@@ -64,7 +70,7 @@ const fullTitle = title === 'Apple Silicon Lab'
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={ogImageAbsolute} />
 
     <!-- Canonical -->
     <link rel="canonical" href={Astro.url.href} />
