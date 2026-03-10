@@ -561,32 +561,46 @@ const chipJsonLd = {
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // ベンチマークバーのアニメーション
-  document.querySelectorAll<HTMLElement>('.bench-bar-fill').forEach((bar) => {
-    const pct = bar.dataset.pct ?? '0';
-    ScrollTrigger.create({
-      trigger: bar,
-      start: 'top 90%',
-      onEnter: () => {
-        bar.style.width = pct + '%';
-      },
-    });
-  });
+  function initReveal() {
+    ScrollTrigger.getAll().forEach(t => t.kill());
 
-  gsap.utils.toArray<HTMLElement>('.reveal').forEach((el) => {
-    gsap.fromTo(el,
-      { y: 40, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 88%',
-          toggleActions: 'play none none none',
+    // ベンチマークバーをリセット（再ナビゲーション時に再アニメーション）
+    document.querySelectorAll<HTMLElement>('.bench-bar-fill').forEach((bar) => {
+      bar.style.width = '0%';
+    });
+
+    // ベンチマークバーのアニメーション
+    document.querySelectorAll<HTMLElement>('.bench-bar-fill').forEach((bar) => {
+      const pct = bar.dataset.pct ?? '0';
+      ScrollTrigger.create({
+        trigger: bar,
+        start: 'top 90%',
+        once: true,
+        onEnter: () => {
+          bar.style.width = pct + '%';
         },
-      }
-    );
-  });
+      });
+    });
+
+    gsap.utils.toArray<HTMLElement>('.reveal').forEach((el) => {
+      gsap.fromTo(el,
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            once: true,
+          },
+        }
+      );
+    });
+
+    ScrollTrigger.refresh();
+  }
+
+  document.addEventListener('astro:page-load', initReveal);
 </script>
