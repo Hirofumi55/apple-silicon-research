@@ -88,22 +88,39 @@ function RadarChart({ selected }: { selected: ChipSpec[] }) {
   );
 }
 
-// 勝者バッジ
-function WinnerBadge({ color }: { color: string }) {
+// ベンチマーク棒グラフカード
+function BenchBarCard({ label, vals, actualMax }: {
+  label: string;
+  vals: { chip: ChipSpec; val: number }[];
+  actualMax: number;
+}) {
   return (
-    <span style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: '3px',
-      fontSize: '10px',
-      fontWeight: 700,
-      padding: '2px 6px',
-      borderRadius: '4px',
-      background: color + '25',
-      color,
-      border: `1px solid ${color}50`,
-      marginLeft: '6px',
-    }}>▲ 最高</span>
+    <div style={{ padding: '16px 20px', background: 'var(--color-surface)', borderRadius: '12px', border: '1px solid var(--color-border)' }}>
+      <h4 style={{ fontSize: '11px', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.8px' }}>{label}</h4>
+      {vals.map(({ chip, val }) => {
+        const pct = (val / actualMax) * 100;
+        return (
+          <div key={chip.id} style={{ marginBottom: '10px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '5px' }}>
+              <span style={{ fontSize: '12px', color: chip.color, fontWeight: 600 }}>{chip.name.replace('Apple ', '')}</span>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
+                <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--color-text)' }}>{val.toLocaleString('ja-JP')}</span>
+                <span style={{ fontSize: '10px', fontWeight: 600, color: chip.color, background: chip.color + '18', padding: '1px 5px', borderRadius: '3px' }}>{Math.round(pct)}%</span>
+              </div>
+            </div>
+            <div style={{ position: 'relative', height: '8px', background: 'rgba(255,255,255,0.06)', borderRadius: '4px', overflow: 'hidden' }}>
+              <div style={{
+                position: 'absolute', left: 0, top: 0, bottom: 0,
+                width: `${pct}%`,
+                background: `linear-gradient(90deg, ${chip.color}80, ${chip.color})`,
+                borderRadius: '4px',
+                transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+              }} />
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 }
 
@@ -127,7 +144,7 @@ function updateUrl(ids: string[]) {
 export default function ChipCompareTool({ chips }: Props) {
   const [activeSeries, setActiveSeries] = useState<'all' | 'm' | 'a'>('all');
   const [selectedIds, setSelectedIds] = useState<string[]>(() => getInitialIds(chips));
-  const [viewMode, setViewMode] = useState<ViewMode>('table');
+  const [viewMode, setViewMode] = useState<ViewMode>('chart');
   const [searchQuery, setSearchQuery] = useState('');
 
   // URL同期
@@ -412,61 +429,44 @@ export default function ChipCompareTool({ chips }: Props) {
       )}
 
       {/* グラフビュー */}
-      {selected.length > 0 && viewMode === 'chart' && (
-        <div className="compare-chart-grid" style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '24px', alignItems: 'start' }}>
-          {/* レーダーチャート */}
-          <div style={{ padding: '24px', background: 'var(--color-surface)', borderRadius: '16px', border: '1px solid var(--color-border)', minWidth: '240px' }}>
-            <h4 style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '12px', textAlign: 'center', letterSpacing: '0.5px' }}>総合性能レーダー</h4>
-            <RadarChart selected={selected} />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginTop: '10px' }}>
-              {selected.map(chip => (
-                <div key={chip.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px' }}>
-                  <div style={{ width: '16px', height: '2px', background: chip.color, borderRadius: '1px' }} />
-                  <span style={{ color: 'var(--color-text-secondary)' }}>{chip.name.replace('Apple ', '')}</span>
-                </div>
-              ))}
+      {selected.length > 0 && viewMode === 'chart' && (() => {
+        const chartMetrics: { label: string; getVal: (c: ChipSpec) => number }[] = [
+          { label: 'Geekbench 6 シングルコア', getVal: c => c.benchmarks.geekbench6SingleCore ?? 0 },
+          { label: 'Geekbench 6 マルチコア', getVal: c => c.benchmarks.geekbench6MultiCore ?? 0 },
+          { label: 'AnTuTu スコア', getVal: c => c.benchmarks.antutu ?? 0 },
+          { label: 'Metal Score (GPU)', getVal: c => c.benchmarks.metalScore ?? 0 },
+          { label: 'Neural Engine (TOPS)', getVal: c => c.neuralEngine.tops },
+          { label: 'メモリ帯域幅 (GB/s)', getVal: c => c.memory.bandwidthGBs },
+          { label: '最大メモリ (GB)', getVal: c => c.memory.maxCapacityGB },
+        ];
+        return (
+          <div className="compare-chart-grid" style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '24px', alignItems: 'start' }}>
+            {/* レーダーチャート */}
+            <div style={{ padding: '24px', background: 'var(--color-surface)', borderRadius: '16px', border: '1px solid var(--color-border)', minWidth: '240px' }}>
+              <h4 style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '12px', textAlign: 'center', letterSpacing: '0.5px' }}>総合性能レーダー</h4>
+              <RadarChart selected={selected} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginTop: '10px' }}>
+                {selected.map(chip => (
+                  <div key={chip.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px' }}>
+                    <div style={{ width: '16px', height: '2px', background: chip.color, borderRadius: '1px' }} />
+                    <span style={{ color: 'var(--color-text-secondary)' }}>{chip.name.replace('Apple ', '')}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ベンチマーク棒グラフ一覧 */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {chartMetrics.map(({ label, getVal }) => {
+                const vals = selected.map(c => ({ chip: c, val: getVal(c) })).filter(d => d.val > 0);
+                if (vals.length === 0) return null;
+                const actualMax = Math.max(...vals.map(d => d.val));
+                return <BenchBarCard key={label} label={label} vals={vals} actualMax={actualMax} />;
+              })}
             </div>
           </div>
-
-          {/* ベンチマーク棒グラフ */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {[
-              { label: 'Geekbench 6 マルチコア', key: 'geekbench6MultiCore' as const, max: 35000 },
-              { label: 'Neural Engine (TOPS)', key: 'neuralTops' as const, max: 50, custom: true },
-              { label: 'メモリ帯域幅 (GB/s)', key: 'bandwidth' as const, max: 700, custom: true },
-            ].map(({ label, key, max, custom }) => {
-              const getVal = (c: ChipSpec) => {
-                if (key === 'neuralTops') return c.neuralEngine.tops;
-                if (key === 'bandwidth') return c.memory.bandwidthGBs;
-                return (c.benchmarks as any)[key] ?? 0;
-              };
-              const vals = selected.map(c => ({ chip: c, val: getVal(c) })).filter(d => d.val > 0);
-              if (vals.length === 0) return null;
-              const actualMax = Math.max(...vals.map(d => d.val));
-
-              return (
-                <div key={key} style={{ padding: '20px 24px', background: 'var(--color-surface)', borderRadius: '12px', border: '1px solid var(--color-border)' }}>
-                  <h4 style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '14px', letterSpacing: '0.3px' }}>{label}</h4>
-                  {vals.map(({ chip, val }) => {
-                    const pct = (val / actualMax) * 100;
-                    return (
-                      <div key={chip.id} style={{ marginBottom: '10px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                          <span style={{ fontSize: '12px', color: chip.color, fontWeight: 600 }}>{chip.name.replace('Apple ', '')}</span>
-                          <span style={{ fontSize: '12px', color: 'var(--color-text)', fontWeight: 500 }}>{val.toLocaleString('ja-JP')}</span>
-                        </div>
-                        <div style={{ height: '5px', background: 'rgba(255,255,255,0.07)', borderRadius: '3px', overflow: 'hidden' }}>
-                          <div style={{ height: '100%', width: `${pct}%`, background: chip.color, borderRadius: '3px', transition: 'width 0.7s ease' }} />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* 勝敗ビュー */}
       {selected.length > 0 && viewMode === 'winner' && (

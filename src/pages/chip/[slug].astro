@@ -43,16 +43,17 @@ const maxBandwidth = Math.max(...seriesChips.map(c => c.memory.bandwidthGBs));
 interface BenchBar {
   label: string;
   value: number | undefined;
+  prevValue?: number;
   max: number;
   unit: string;
 }
 const benchBars: BenchBar[] = [
-  ...(chip.benchmarks.geekbench6SingleCore ? [{ label: 'Geekbench 6 Single', value: chip.benchmarks.geekbench6SingleCore, max: maxGB6Single, unit: '' }] : []),
-  ...(chip.benchmarks.geekbench6MultiCore  ? [{ label: 'Geekbench 6 Multi',  value: chip.benchmarks.geekbench6MultiCore,  max: maxGB6Multi,  unit: '' }] : []),
-  ...(chip.benchmarks.antutu               ? [{ label: 'AnTuTu',             value: chip.benchmarks.antutu,               max: maxAnTuTu,    unit: '' }] : []),
-  ...(chip.benchmarks.metalScore           ? [{ label: 'Metal Score',        value: chip.benchmarks.metalScore,           max: maxMetal,     unit: '' }] : []),
-  { label: 'Neural Engine',  value: chip.neuralEngine.tops,      max: maxTops,      unit: ' TOPS' },
-  { label: 'メモリ帯域幅',   value: chip.memory.bandwidthGBs,   max: maxBandwidth, unit: ' GB/s' },
+  ...(chip.benchmarks.geekbench6SingleCore ? [{ label: 'Geekbench 6 Single', value: chip.benchmarks.geekbench6SingleCore, prevValue: prevChip?.benchmarks.geekbench6SingleCore, max: maxGB6Single, unit: '' }] : []),
+  ...(chip.benchmarks.geekbench6MultiCore  ? [{ label: 'Geekbench 6 Multi',  value: chip.benchmarks.geekbench6MultiCore,  prevValue: prevChip?.benchmarks.geekbench6MultiCore,  max: maxGB6Multi,  unit: '' }] : []),
+  ...(chip.benchmarks.antutu               ? [{ label: 'AnTuTu',             value: chip.benchmarks.antutu,               prevValue: prevChip?.benchmarks.antutu,               max: maxAnTuTu,    unit: '' }] : []),
+  ...(chip.benchmarks.metalScore           ? [{ label: 'Metal Score',        value: chip.benchmarks.metalScore,           prevValue: prevChip?.benchmarks.metalScore,           max: maxMetal,     unit: '' }] : []),
+  { label: 'Neural Engine',  value: chip.neuralEngine.tops,    prevValue: prevChip?.neuralEngine.tops,    max: maxTops,      unit: ' TOPS' },
+  { label: 'メモリ帯域幅',   value: chip.memory.bandwidthGBs, prevValue: prevChip?.memory.bandwidthGBs, max: maxBandwidth, unit: ' GB/s' },
 ];
 
 // JSON-LD 構造化データ
@@ -430,17 +431,27 @@ const chipJsonLd = {
         同シリーズ最高スペックを100%として表示
       </p>
 
-      <div style="display: flex; flex-direction: column; gap: 20px; max-width: 720px;">
+      <div style="display: flex; flex-direction: column; gap: 24px; max-width: 720px;">
         {benchBars.map((bar) => {
           const pct = bar.max > 0 ? Math.round(((bar.value ?? 0) / bar.max) * 100) : 0;
+          const prevPct = (bar.prevValue && bar.max > 0) ? Math.round((bar.prevValue / bar.max) * 100) : null;
           const displayVal = (bar.value ?? 0).toLocaleString('ja-JP') + bar.unit;
+          const improvement = bar.prevValue && bar.value
+            ? Math.round((bar.value / bar.prevValue - 1) * 100)
+            : null;
           return (
-            <div class="reveal bench-bar-row" style="display: flex; flex-direction: column; gap: 6px;">
+            <div class="reveal bench-bar-row" style="display: flex; flex-direction: column; gap: 8px;">
               <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                <span style="font-size: 13px; color: var(--color-text-secondary);">{bar.label}</span>
-                <span style={`font-size: 14px; font-weight: 700; color: ${chip.color};`}>{displayVal}</span>
+                <span style="font-size: 13px; color: var(--color-text-secondary); font-weight: 500;">{bar.label}</span>
+                <div style="display: flex; align-items: baseline; gap: 8px;">
+                  {improvement !== null && improvement > 0 && (
+                    <span style="font-size: 11px; font-weight: 700; color: #30d158; background: rgba(48,209,88,0.12); padding: 1px 6px; border-radius: 4px;">+{improvement}%</span>
+                  )}
+                  <span style={`font-size: 16px; font-weight: 800; color: ${chip.color};`}>{displayVal}</span>
+                </div>
               </div>
-              <div style="position: relative; height: 6px; background: var(--color-border); border-radius: 3px; overflow: hidden;">
+              <div style="position: relative; height: 10px; background: var(--color-border); border-radius: 5px; overflow: visible;">
+                {/* バー本体 */}
                 <div
                   class="bench-bar-fill"
                   data-pct={pct}
@@ -448,13 +459,30 @@ const chipJsonLd = {
                     position: absolute;
                     left: 0; top: 0; bottom: 0;
                     width: 0%;
-                    background: linear-gradient(90deg, ${chip.color}cc, ${chip.color});
-                    border-radius: 3px;
+                    background: linear-gradient(90deg, ${chip.color}80, ${chip.color});
+                    border-radius: 5px;
                     transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+                    overflow: hidden;
                   `}
                 ></div>
+                {/* 前世代マーカー */}
+                {prevPct !== null && prevPct > 0 && (
+                  <div style={`
+                    position: absolute;
+                    top: -3px; bottom: -3px;
+                    left: ${prevPct}%;
+                    width: 2px;
+                    background: rgba(255,255,255,0.4);
+                    border-radius: 1px;
+                  `} title={`前世代: ${prevPct}%`}></div>
+                )}
               </div>
-              <div style="font-size: 11px; color: var(--color-text-secondary); text-align: right;">{pct}%</div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                {prevPct !== null ? (
+                  <span style="font-size: 11px; color: var(--color-text-secondary);">前世代: {bar.prevValue?.toLocaleString('ja-JP')}{bar.unit}</span>
+                ) : <span />}
+                <span style={`font-size: 12px; font-weight: 700; color: ${chip.color}; background: ${chip.color}18; padding: 1px 7px; border-radius: 4px;`}>{pct}%</span>
+              </div>
             </div>
           );
         })}
