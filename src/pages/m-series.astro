@@ -7,6 +7,12 @@ import chipsData from '../data/chips.json';
 const chips = chipsData as ChipSpec[];
 const mChips = chips.filter(c => c.series === 'm');
 
+// ベンチマーク最大値（バー表示用）
+const maxGB6Single = Math.max(...mChips.map(c => c.benchmarks.geekbench6SingleCore ?? 0));
+const maxGB6Multi  = Math.max(...mChips.map(c => c.benchmarks.geekbench6MultiCore ?? 0));
+const maxBandwidth = Math.max(...mChips.map(c => c.memory.bandwidthGBs));
+const maxTops      = Math.max(...mChips.map(c => c.neuralEngine.tops));
+
 // 世代グループ
 const generations = [
   { gen: 'M1', chips: mChips.filter(c => c.id.startsWith('m1')), year: '2020-2022' },
@@ -167,11 +173,31 @@ const mSeriesJsonLd = {
                   <span style={`font-weight: 600; color: ${chip.color};`}>{chip.memory.bandwidthGBs}</span>
                   <span style="font-size: 11px; color: var(--color-text-secondary);"> GB/s</span>
                 </td>
-                <td style="padding: 14px 16px; text-align: center; color: var(--color-text-secondary);">
-                  {chip.benchmarks.geekbench6SingleCore?.toLocaleString('ja-JP') ?? '—'}
+                <td style="padding: 10px 16px; text-align: center;">
+                  {chip.benchmarks.geekbench6SingleCore ? (() => {
+                    const pct = Math.round((chip.benchmarks.geekbench6SingleCore / maxGB6Single) * 100);
+                    return (
+                      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                        <span style={`font-size: 13px; font-weight: 600; color: ${chip.color};`}>{chip.benchmarks.geekbench6SingleCore.toLocaleString('ja-JP')}</span>
+                        <div style="width: 56px; height: 4px; background: var(--color-border); border-radius: 2px; overflow: hidden;">
+                          <div style={`width: ${pct}%; height: 100%; background: ${chip.color}; border-radius: 2px;`}></div>
+                        </div>
+                      </div>
+                    );
+                  })() : <span style="color: var(--color-text-secondary);">—</span>}
                 </td>
-                <td style="padding: 14px 16px; text-align: center; color: var(--color-text-secondary);">
-                  {chip.benchmarks.geekbench6MultiCore?.toLocaleString('ja-JP') ?? '—'}
+                <td style="padding: 10px 16px; text-align: center;">
+                  {chip.benchmarks.geekbench6MultiCore ? (() => {
+                    const pct = Math.round((chip.benchmarks.geekbench6MultiCore / maxGB6Multi) * 100);
+                    return (
+                      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                        <span style={`font-size: 13px; font-weight: 600; color: ${chip.color};`}>{chip.benchmarks.geekbench6MultiCore.toLocaleString('ja-JP')}</span>
+                        <div style="width: 56px; height: 4px; background: var(--color-border); border-radius: 2px; overflow: hidden;">
+                          <div style={`width: ${pct}%; height: 100%; background: ${chip.color}; border-radius: 2px;`}></div>
+                        </div>
+                      </div>
+                    );
+                  })() : <span style="color: var(--color-text-secondary);">—</span>}
                 </td>
                 <td style="padding: 14px 16px; text-align: center; color: var(--color-text-secondary); white-space: nowrap;">
                   {chip.releaseDate.replace('-', '年')}月
@@ -249,7 +275,7 @@ const mSeriesJsonLd = {
                   <h3 style="font-size: 15px; font-weight: 700; color: var(--color-text);">{chip.name}</h3>
                   <span style={`font-size: 11px; color: ${chip.color};`}>{chip.processNode}</span>
                 </div>
-                <div style="display: flex; gap: 16px; font-size: 12px;">
+                <div style="display: flex; gap: 16px; font-size: 12px; margin-bottom: 12px;">
                   <div>
                     <span style="color: var(--color-text-secondary);">CPU </span>
                     <span style="color: var(--color-text); font-weight: 600;">{chip.cpu.totalCores}コア</span>
@@ -263,6 +289,20 @@ const mSeriesJsonLd = {
                     <span style={`font-weight: 600; color: ${chip.color};`}>{chip.memory.maxCapacityGB}GB</span>
                   </div>
                 </div>
+                {chip.benchmarks.geekbench6MultiCore && (() => {
+                  const pct = Math.round((chip.benchmarks.geekbench6MultiCore / maxGB6Multi) * 100);
+                  return (
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                      <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                        <span style="font-size: 11px; color: var(--color-text-secondary);">GB6 Multi</span>
+                        <span style={`font-size: 12px; font-weight: 700; color: ${chip.color};`}>{chip.benchmarks.geekbench6MultiCore.toLocaleString('ja-JP')}</span>
+                      </div>
+                      <div style="position: relative; height: 4px; background: var(--color-border); border-radius: 2px; overflow: hidden;">
+                        <div style={`width: ${pct}%; height: 100%; background: linear-gradient(90deg, ${chip.color}80, ${chip.color}); border-radius: 2px;`}></div>
+                      </div>
+                    </div>
+                  );
+                })()}
               </a>
             ))}
           </div>

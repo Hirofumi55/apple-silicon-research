@@ -7,6 +7,11 @@ import chipsData from '../data/chips.json';
 const chips = chipsData as ChipSpec[];
 const aChips = chips.filter(c => c.series === 'a');
 
+// ベンチマーク最大値（バー表示用）
+const maxAnTuTu    = Math.max(...aChips.map(c => c.benchmarks.antutu ?? 0));
+const maxGB6Single = Math.max(...aChips.map(c => c.benchmarks.geekbench6SingleCore ?? 0));
+const maxTops      = Math.max(...aChips.map(c => c.neuralEngine.tops));
+
 const aSeriesJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
@@ -151,11 +156,31 @@ const aSeriesJsonLd = {
                   <span style={`font-weight: 600; color: ${chip.color};`}>{chip.memory.maxCapacityGB}</span>
                   <span style="font-size: 11px; color: var(--color-text-secondary);"> GB</span>
                 </td>
-                <td style="padding: 14px 16px; text-align: center; color: var(--color-text-secondary);">
-                  {chip.benchmarks.antutu?.toLocaleString('ja-JP') ?? '—'}
+                <td style="padding: 10px 16px; text-align: center;">
+                  {chip.benchmarks.antutu ? (() => {
+                    const pct = Math.round((chip.benchmarks.antutu / maxAnTuTu) * 100);
+                    return (
+                      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                        <span style={`font-size: 12px; font-weight: 600; color: ${chip.color};`}>{(chip.benchmarks.antutu / 1000000).toFixed(1)}M</span>
+                        <div style="width: 56px; height: 4px; background: var(--color-border); border-radius: 2px; overflow: hidden;">
+                          <div style={`width: ${pct}%; height: 100%; background: ${chip.color}; border-radius: 2px;`}></div>
+                        </div>
+                      </div>
+                    );
+                  })() : <span style="color: var(--color-text-secondary);">—</span>}
                 </td>
-                <td style="padding: 14px 16px; text-align: center; color: var(--color-text-secondary);">
-                  {chip.benchmarks.geekbench6SingleCore?.toLocaleString('ja-JP') ?? '—'}
+                <td style="padding: 10px 16px; text-align: center;">
+                  {chip.benchmarks.geekbench6SingleCore ? (() => {
+                    const pct = Math.round((chip.benchmarks.geekbench6SingleCore / maxGB6Single) * 100);
+                    return (
+                      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                        <span style={`font-size: 13px; font-weight: 600; color: ${chip.color};`}>{chip.benchmarks.geekbench6SingleCore.toLocaleString('ja-JP')}</span>
+                        <div style="width: 56px; height: 4px; background: var(--color-border); border-radius: 2px; overflow: hidden;">
+                          <div style={`width: ${pct}%; height: 100%; background: ${chip.color}; border-radius: 2px;`}></div>
+                        </div>
+                      </div>
+                    );
+                  })() : <span style="color: var(--color-text-secondary);">—</span>}
                 </td>
                 <td style="padding: 14px 16px; text-align: center; color: var(--color-text-secondary); font-size: 12px; max-width: 160px;">
                   {chip.devices[0]}
@@ -232,6 +257,24 @@ const aSeriesJsonLd = {
                   <div style="color: var(--color-text); font-weight: 600;">{chip.gpu.maxCores ?? chip.gpu.cores}コア</div>
                 </div>
               </div>
+              {chip.benchmarks.antutu && (() => {
+                const pct = Math.round((chip.benchmarks.antutu / maxAnTuTu) * 100);
+                return (
+                  <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                      <span style="font-size: 11px; color: var(--color-text-secondary);">AnTuTu</span>
+                      <span style={`font-size: 12px; font-weight: 700; color: ${chip.color};`}>{(chip.benchmarks.antutu / 1000000).toFixed(1)}M</span>
+                    </div>
+                    <div style="position: relative; height: 4px; background: var(--color-border); border-radius: 2px; overflow: hidden;">
+                      <div style={`width: ${pct}%; height: 100%; background: linear-gradient(90deg, ${chip.color}80, ${chip.color}); border-radius: 2px;`}></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                      <span style="font-size: 11px; color: var(--color-text-secondary);">GB6 Single</span>
+                      <span style="font-size: 12px; color: var(--color-text-secondary);">{chip.benchmarks.geekbench6SingleCore?.toLocaleString('ja-JP') ?? '—'}</span>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
             <!-- 搭載デバイス -->
