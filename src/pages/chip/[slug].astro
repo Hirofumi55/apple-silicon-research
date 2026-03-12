@@ -668,47 +668,62 @@ const chipJsonLd = {
 
   gsap.registerPlugin(ScrollTrigger);
 
+  let ctx: gsap.Context | null = null;
+
   function initReveal() {
-    ScrollTrigger.getAll().forEach(t => t.kill());
+    // 前回の gsap.context をリバート（インラインスタイルを完全にクリア）
+    if (ctx) {
+      ctx.revert();
+      ctx = null;
+    }
 
-    // バーを先にリセット
-    document.querySelectorAll<HTMLElement>('.bench-bar-fill').forEach((bar) => {
-      gsap.set(bar, { width: '0%' });
+    ctx = gsap.context(() => {
+      // バーを直接スタイルでリセット（gsap.set は context 内で管理）
+      document.querySelectorAll<HTMLElement>('.bench-bar-fill').forEach((bar) => {
+        bar.style.width = '0%';
+      });
+
+      gsap.utils.toArray<HTMLElement>('.reveal').forEach((el) => {
+        const barFill = (el as HTMLElement).querySelector<HTMLElement>('.bench-bar-fill');
+        const pct = barFill?.dataset.pct ?? '0';
+
+        gsap.fromTo(el,
+          { y: 40, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 88%',
+              once: true,
+            },
+            onStart() {
+              if (barFill) {
+                gsap.to(barFill, {
+                  width: pct + '%',
+                  duration: 1,
+                  ease: 'power3.out',
+                  delay: 0.15,
+                });
+              }
+            },
+          }
+        );
+      });
+
+      ScrollTrigger.refresh();
     });
-
-    gsap.utils.toArray<HTMLElement>('.reveal').forEach((el) => {
-      // bench-bar-row の場合は内部バーも一緒にアニメーション
-      const barFill = (el as HTMLElement).querySelector<HTMLElement>('.bench-bar-fill');
-      const pct = barFill?.dataset.pct ?? '0';
-
-      gsap.fromTo(el,
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 88%',
-            once: true,
-          },
-          onStart: () => {
-            if (barFill) {
-              gsap.to(barFill, {
-                width: pct + '%',
-                duration: 1,
-                ease: 'power3.out',
-                delay: 0.15,
-              });
-            }
-          },
-        }
-      );
-    });
-
-    ScrollTrigger.refresh();
   }
+
+  // Astro が DOM を入れ替える直前に GSAP コンテキストをクリーンアップ
+  document.addEventListener('astro:before-swap', () => {
+    if (ctx) {
+      ctx.revert();
+      ctx = null;
+    }
+  });
 
   document.addEventListener('astro:page-load', initReveal);
 </script>
