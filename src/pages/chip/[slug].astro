@@ -415,51 +415,86 @@ const chipJsonLd = {
               <span style="font-size: 11px; color: var(--color-text-secondary);">vs {prevChip.name}</span>
             )}
           </div>
-          <dl style="display: flex; flex-direction: column; gap: 12px;">
-            {chip.benchmarks.geekbench6SingleCore && (
-              <>
-                <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                  <dt style="font-size: 12px; color: var(--color-text-secondary);">Geekbench 6 (Single)</dt>
-                  <dd style="display: flex; align-items: baseline; gap: 6px;">
-                    <span style="font-size: 16px; font-weight: 700; color: var(--color-text);">{chip.benchmarks.geekbench6SingleCore.toLocaleString('ja-JP')}</span>
-                    {singleImprovement && singleImprovement > 0 && (
-                      <span style={`font-size: 11px; font-weight: 600; color: #30d158;`}>+{singleImprovement}%</span>
-                    )}
-                  </dd>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            {chip.benchmarks.geekbench6SingleCore && (() => {
+              const pct = Math.round((chip.benchmarks.geekbench6SingleCore / maxGB6Single) * 100);
+              const prevPct = prevChip?.benchmarks.geekbench6SingleCore
+                ? Math.round((prevChip.benchmarks.geekbench6SingleCore / maxGB6Single) * 100) : null;
+              return (
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px;">
+                    <span style="font-size: 12px; color: var(--color-text-secondary);">GB6 Single</span>
+                    <div style="display: flex; align-items: baseline; gap: 6px;">
+                      {singleImprovement && singleImprovement > 0 && (
+                        <span style="font-size: 10px; font-weight: 700; color: #30d158; background: rgba(48,209,88,0.12); padding: 1px 5px; border-radius: 3px;">+{singleImprovement}%</span>
+                      )}
+                      <span style="font-size: 15px; font-weight: 700; color: var(--color-text);">{chip.benchmarks.geekbench6SingleCore.toLocaleString('ja-JP')}</span>
+                    </div>
+                  </div>
+                  <div style="position: relative; height: 6px; background: var(--color-border); border-radius: 3px; overflow: visible;">
+                    <div style={`width: ${pct}%; height: 100%; background: linear-gradient(90deg, ${chip.color}60, ${chip.color}); border-radius: 3px;`}></div>
+                    {prevPct && <div style={`position: absolute; top: -2px; bottom: -2px; left: ${prevPct}%; width: 2px; background: rgba(255,255,255,0.35); border-radius: 1px;`}></div>}
+                  </div>
                 </div>
-                <div style="height: 1px; background: var(--color-border);"></div>
-              </>
-            )}
-            {chip.benchmarks.geekbench6MultiCore && (
-              <>
-                <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                  <dt style="font-size: 12px; color: var(--color-text-secondary);">Geekbench 6 (Multi)</dt>
-                  <dd style="display: flex; align-items: baseline; gap: 6px;">
-                    <span style={`font-size: 16px; font-weight: 700; color: ${chip.color};`}>{chip.benchmarks.geekbench6MultiCore.toLocaleString('ja-JP')}</span>
-                    {multiImprovement && multiImprovement > 0 && (
-                      <span style={`font-size: 11px; font-weight: 600; color: #30d158;`}>+{multiImprovement}%</span>
-                    )}
-                  </dd>
+              );
+            })()}
+            {chip.benchmarks.geekbench6MultiCore && (() => {
+              const pct = Math.round((chip.benchmarks.geekbench6MultiCore / maxGB6Multi) * 100);
+              const prevPct = prevChip?.benchmarks.geekbench6MultiCore
+                ? Math.round((prevChip.benchmarks.geekbench6MultiCore / maxGB6Multi) * 100) : null;
+              return (
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px;">
+                    <span style="font-size: 12px; color: var(--color-text-secondary);">GB6 Multi</span>
+                    <div style="display: flex; align-items: baseline; gap: 6px;">
+                      {multiImprovement && multiImprovement > 0 && (
+                        <span style="font-size: 10px; font-weight: 700; color: #30d158; background: rgba(48,209,88,0.12); padding: 1px 5px; border-radius: 3px;">+{multiImprovement}%</span>
+                      )}
+                      <span style={`font-size: 15px; font-weight: 700; color: ${chip.color};`}>{chip.benchmarks.geekbench6MultiCore.toLocaleString('ja-JP')}</span>
+                    </div>
+                  </div>
+                  <div style="position: relative; height: 6px; background: var(--color-border); border-radius: 3px; overflow: visible;">
+                    <div style={`width: ${pct}%; height: 100%; background: linear-gradient(90deg, ${chip.color}80, ${chip.color}); border-radius: 3px;`}></div>
+                    {prevPct && <div style={`position: absolute; top: -2px; bottom: -2px; left: ${prevPct}%; width: 2px; background: rgba(255,255,255,0.35); border-radius: 1px;`}></div>}
+                  </div>
                 </div>
-                <div style="height: 1px; background: var(--color-border);"></div>
-              </>
-            )}
-            {chip.benchmarks.antutu && (
-              <>
-                <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                  <dt style="font-size: 12px; color: var(--color-text-secondary);">AnTuTu</dt>
-                  <dd style={`font-size: 16px; font-weight: 700; color: ${chip.color};`}>{chip.benchmarks.antutu.toLocaleString('ja-JP')}</dd>
+              );
+            })()}
+            {chip.benchmarks.antutu && (() => {
+              const pct = Math.round((chip.benchmarks.antutu / maxAnTuTu) * 100);
+              const prevPct = prevChip?.benchmarks.antutu
+                ? Math.round((prevChip.benchmarks.antutu / maxAnTuTu) * 100) : null;
+              return (
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px;">
+                    <span style="font-size: 12px; color: var(--color-text-secondary);">AnTuTu</span>
+                    <span style={`font-size: 15px; font-weight: 700; color: ${chip.color};`}>{(chip.benchmarks.antutu / 1000000).toFixed(1)}M</span>
+                  </div>
+                  <div style="position: relative; height: 6px; background: var(--color-border); border-radius: 3px; overflow: visible;">
+                    <div style={`width: ${pct}%; height: 100%; background: linear-gradient(90deg, ${chip.color}80, ${chip.color}); border-radius: 3px;`}></div>
+                    {prevPct && <div style={`position: absolute; top: -2px; bottom: -2px; left: ${prevPct}%; width: 2px; background: rgba(255,255,255,0.35); border-radius: 1px;`}></div>}
+                  </div>
                 </div>
-                <div style="height: 1px; background: var(--color-border);"></div>
-              </>
-            )}
-            {chip.benchmarks.metalScore && (
-              <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                <dt style="font-size: 12px; color: var(--color-text-secondary);">Metal Score</dt>
-                <dd style="font-size: 16px; font-weight: 700; color: var(--color-text);">{chip.benchmarks.metalScore.toLocaleString('ja-JP')}</dd>
-              </div>
-            )}
-          </dl>
+              );
+            })()}
+            {chip.benchmarks.metalScore && (() => {
+              const pct = Math.round((chip.benchmarks.metalScore / maxMetal) * 100);
+              const prevPct = prevChip?.benchmarks.metalScore
+                ? Math.round((prevChip.benchmarks.metalScore / maxMetal) * 100) : null;
+              return (
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px;">
+                    <span style="font-size: 12px; color: var(--color-text-secondary);">Metal Score</span>
+                    <span style="font-size: 15px; font-weight: 700; color: var(--color-text);">{chip.benchmarks.metalScore.toLocaleString('ja-JP')}</span>
+                  </div>
+                  <div style="position: relative; height: 6px; background: var(--color-border); border-radius: 3px; overflow: visible;">
+                    <div style={`width: ${pct}%; height: 100%; background: linear-gradient(90deg, ${chip.color}50, ${chip.color}90); border-radius: 3px;`}></div>
+                    {prevPct && <div style={`position: absolute; top: -2px; bottom: -2px; left: ${prevPct}%; width: 2px; background: rgba(255,255,255,0.35); border-radius: 1px;`}></div>}
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
         </div>
       </div>
     </div>
