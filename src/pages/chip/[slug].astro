@@ -671,25 +671,16 @@ const chipJsonLd = {
   function initReveal() {
     ScrollTrigger.getAll().forEach(t => t.kill());
 
-    // ベンチマークバーをリセット（再ナビゲーション時に再アニメーション）
+    // バーを先にリセット
     document.querySelectorAll<HTMLElement>('.bench-bar-fill').forEach((bar) => {
-      bar.style.width = '0%';
-    });
-
-    // ベンチマークバーのアニメーション
-    document.querySelectorAll<HTMLElement>('.bench-bar-fill').forEach((bar) => {
-      const pct = bar.dataset.pct ?? '0';
-      ScrollTrigger.create({
-        trigger: bar,
-        start: 'top 90%',
-        once: true,
-        onEnter: () => {
-          bar.style.width = pct + '%';
-        },
-      });
+      gsap.set(bar, { width: '0%' });
     });
 
     gsap.utils.toArray<HTMLElement>('.reveal').forEach((el) => {
+      // bench-bar-row の場合は内部バーも一緒にアニメーション
+      const barFill = (el as HTMLElement).querySelector<HTMLElement>('.bench-bar-fill');
+      const pct = barFill?.dataset.pct ?? '0';
+
       gsap.fromTo(el,
         { y: 40, opacity: 0 },
         {
@@ -701,6 +692,16 @@ const chipJsonLd = {
             trigger: el,
             start: 'top 88%',
             once: true,
+          },
+          onStart: () => {
+            if (barFill) {
+              gsap.to(barFill, {
+                width: pct + '%',
+                duration: 1,
+                ease: 'power3.out',
+                delay: 0.15,
+              });
+            }
           },
         }
       );
