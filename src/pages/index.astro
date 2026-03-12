@@ -15,6 +15,14 @@ const firstM = chips.find(c => c.id === 'm1')!;
 const cpuImprovement = Math.round(
   ((latestM.benchmarks.geekbench6MultiCore ?? 1) / (firstM.benchmarks.geekbench6MultiCore ?? 1)) * 10
 ) / 10;
+
+// ChipCard バー表示用最大値
+const maxMBenchmark = Math.max(...mChips.map(c => c.benchmarks.geekbench6MultiCore ?? 0));
+const maxABenchmark = Math.max(...aChips.map(c => c.benchmarks.antutu ?? 0));
+const maxMCpuCores  = Math.max(...mChips.map(c => c.cpu.totalCores));
+const maxMGpuCores  = Math.max(...mChips.map(c => c.gpu.maxCores ?? c.gpu.cores));
+const maxACpuCores  = Math.max(...aChips.map(c => c.cpu.totalCores));
+const maxAGpuCores  = Math.max(...aChips.map(c => c.gpu.maxCores ?? c.gpu.cores));
 ---
 
 <BaseLayout title="Apple Silicon Lab">
@@ -328,7 +336,7 @@ const cpuImprovement = Math.round(
             class="reveal"
             style={`animation-delay: ${i * 0.05}s;`}
           >
-            <ChipCard chip={chip} />
+            <ChipCard chip={chip} maxBenchmark={maxMBenchmark} maxCpuCores={maxMCpuCores} maxGpuCores={maxMGpuCores} />
           </div>
         ))}
       </div>
@@ -369,7 +377,7 @@ const cpuImprovement = Math.round(
             class="reveal"
             style={`animation-delay: ${i * 0.05}s;`}
           >
-            <ChipCard chip={chip} />
+            <ChipCard chip={chip} maxBenchmark={maxABenchmark} maxCpuCores={maxACpuCores} maxGpuCores={maxAGpuCores} />
           </div>
         ))}
       </div>

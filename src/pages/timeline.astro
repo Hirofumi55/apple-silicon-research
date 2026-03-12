@@ -7,6 +7,12 @@ const chips = chipsData as ChipSpec[];
 // 発売順にソート
 const sorted = [...chips].sort((a, b) => a.releaseDate.localeCompare(b.releaseDate));
 
+// バー表示用最大値
+const maxGB6Multi = Math.max(...chips.map(c => c.benchmarks.geekbench6MultiCore ?? 0));
+const maxAnTuTu   = Math.max(...chips.map(c => c.benchmarks.antutu ?? 0));
+const maxCpuCores = Math.max(...chips.map(c => c.cpu.totalCores));
+const maxGpuCores = Math.max(...chips.map(c => c.gpu.maxCores ?? c.gpu.cores));
+
 // 年ごとにグループ
 const byYear = sorted.reduce<Record<string, ChipSpec[]>>((acc, chip) => {
   const year = chip.releaseDate.split('-')[0];
@@ -127,9 +133,52 @@ const timelineJsonLd = {
                     <span style="font-size: 15px; font-weight: 700; color: var(--color-text);">{chip.name}</span>
                     <span style={`font-size: 11px; color: ${chip.color}; margin-left: auto;`}>{chip.processNode}</span>
                   </div>
-                  <p style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px;">
-                    {chip.description.slice(0, 70)}…
+                  <p style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 10px;">
+                    {chip.description.slice(0, 60)}…
                   </p>
+                  <!-- スペック mini-bars -->
+                  {(() => {
+                    const cpuPct = Math.round((chip.cpu.totalCores / maxCpuCores) * 100);
+                    const gpuCores = chip.gpu.maxCores ?? chip.gpu.cores;
+                    const gpuPct = Math.round((gpuCores / maxGpuCores) * 100);
+                    const bench = chip.benchmarks.geekbench6MultiCore ?? chip.benchmarks.antutu;
+                    const benchMax = chip.benchmarks.geekbench6MultiCore ? maxGB6Multi : maxAnTuTu;
+                    const benchPct = bench ? Math.round((bench / benchMax) * 100) : null;
+                    const benchLabel = chip.benchmarks.geekbench6MultiCore ? 'GB6' : 'AnTuTu';
+                    return (
+                      <div style="display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px;">
+                        <div>
+                          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
+                            <span style="font-size: 10px; color: var(--color-text-secondary);">CPU {chip.cpu.totalCores}コア</span>
+                            <span style={`font-size: 10px; color: ${chip.color};`}>{cpuPct}%</span>
+                          </div>
+                          <div style="height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;">
+                            <div style={`width: ${cpuPct}%; height: 100%; background: ${chip.color}; border-radius: 2px;`}></div>
+                          </div>
+                        </div>
+                        <div>
+                          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
+                            <span style="font-size: 10px; color: var(--color-text-secondary);">GPU {gpuCores}コア</span>
+                            <span style={`font-size: 10px; color: ${chip.color};`}>{gpuPct}%</span>
+                          </div>
+                          <div style="height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;">
+                            <div style={`width: ${gpuPct}%; height: 100%; background: linear-gradient(90deg, ${chip.color}80, ${chip.color}); border-radius: 2px;`}></div>
+                          </div>
+                        </div>
+                        {benchPct && (
+                          <div>
+                            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
+                              <span style="font-size: 10px; color: var(--color-text-secondary);">{benchLabel}</span>
+                              <span style={`font-size: 10px; color: ${chip.color};`}>{benchPct}%</span>
+                            </div>
+                            <div style="height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;">
+                              <div style={`width: ${benchPct}%; height: 100%; background: linear-gradient(90deg, ${chip.color}60, ${chip.color}); border-radius: 2px;`}></div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
                   <div style="display: flex; flex-wrap: wrap; gap: 6px;">
                     {chip.highlights.slice(0, 2).map(h => (
                       <span style={`

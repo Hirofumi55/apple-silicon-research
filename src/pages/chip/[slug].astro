@@ -40,6 +40,15 @@ const maxMetal     = Math.max(...seriesChips.map(c => c.benchmarks.metalScore ??
 const maxTops      = Math.max(...seriesChips.map(c => c.neuralEngine.tops));
 const maxBandwidth = Math.max(...seriesChips.map(c => c.memory.bandwidthGBs));
 
+// コア数最大値（同シリーズ内）
+const maxCpuCores = Math.max(...seriesChips.map(c => c.cpu.totalCores));
+const maxGpuCores = Math.max(...seriesChips.map(c => c.gpu.maxCores ?? c.gpu.cores));
+const cpuCorePct  = Math.round((chip.cpu.totalCores / maxCpuCores) * 100);
+const gpuCorePct  = Math.round(((chip.gpu.maxCores ?? chip.gpu.cores) / maxGpuCores) * 100);
+// P-core / E-core 比率
+const pCoreRatio  = Math.round((chip.cpu.performanceCores / chip.cpu.totalCores) * 100);
+const eCoreRatio  = Math.round((chip.cpu.efficiencyCores / chip.cpu.totalCores) * 100);
+
 interface BenchBar {
   label: string;
   value: number | undefined;
@@ -275,19 +284,45 @@ const chipJsonLd = {
           border: 1px solid var(--color-border);
         " class="reveal">
           <h3 style="font-size: 13px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">CPU</h3>
-          <div style="margin-bottom: 20px;">
-            <div style="font-size: 48px; font-weight: 800; color: var(--color-text); letter-spacing: -2px; line-height: 1;">{chip.cpu.totalCores}</div>
-            <div style="font-size: 14px; color: var(--color-text-secondary);">コア</div>
+          <div style="margin-bottom: 16px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <div style={`font-size: 48px; font-weight: 800; color: ${chip.color}; letter-spacing: -2px; line-height: 1;`}>{chip.cpu.totalCores}</div>
+              <div>
+                <div style="font-size: 13px; color: var(--color-text-secondary);">コア</div>
+                <div style={`font-size: 11px; font-weight: 700; color: ${chip.color}; background: ${chip.color}18; padding: 1px 6px; border-radius: 3px; margin-top: 2px;`}>{cpuCorePct}%</div>
+              </div>
+            </div>
+            <!-- シリーズ内コア数バー -->
+            <div style="height: 6px; background: var(--color-border); border-radius: 3px; overflow: hidden; margin-bottom: 14px;">
+              <div style={`width: ${cpuCorePct}%; height: 100%; background: linear-gradient(90deg, ${chip.color}80, ${chip.color}); border-radius: 3px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);`}></div>
+            </div>
+            <!-- P-core / E-core 積み上げバー -->
+            <div style="margin-bottom: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: var(--color-text-secondary);">コア構成</span>
+                <span style="font-size: 11px; color: var(--color-text-secondary);">{chip.cpu.performanceCores}P + {chip.cpu.efficiencyCores}E</span>
+              </div>
+              <div style="display: flex; height: 12px; border-radius: 6px; overflow: hidden; gap: 1px;">
+                {Array.from({ length: chip.cpu.performanceCores }).map((_, i) => (
+                  <div key={i} style={`flex: 1; background: ${chip.color};`}></div>
+                ))}
+                {Array.from({ length: chip.cpu.efficiencyCores }).map((_, i) => (
+                  <div key={i} style={`flex: 1; background: ${chip.color}40;`}></div>
+                ))}
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-top: 4px;">
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <div style={`width: 8px; height: 8px; border-radius: 2px; background: ${chip.color};`}></div>
+                  <span style="font-size: 10px; color: var(--color-text-secondary);">高性能コア ×{chip.cpu.performanceCores}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                  <div style={`width: 8px; height: 8px; border-radius: 2px; background: ${chip.color}40; border: 1px solid ${chip.color}60;`}></div>
+                  <span style="font-size: 10px; color: var(--color-text-secondary);">高効率コア ×{chip.cpu.efficiencyCores}</span>
+                </div>
+              </div>
+            </div>
           </div>
           <dl style="display: flex; flex-direction: column; gap: 10px;">
-            <div style="display: flex; justify-content: space-between;">
-              <dt style="font-size: 13px; color: var(--color-text-secondary);">高性能コア</dt>
-              <dd style="font-size: 13px; font-weight: 600; color: var(--color-text);">{chip.cpu.performanceCores}</dd>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-              <dt style="font-size: 13px; color: var(--color-text-secondary);">高効率コア</dt>
-              <dd style="font-size: 13px; font-weight: 600; color: var(--color-text);">{chip.cpu.efficiencyCores}</dd>
-            </div>
             {chip.cpu.maxClockSpeed && (
               <div style="display: flex; justify-content: space-between;">
                 <dt style="font-size: 13px; color: var(--color-text-secondary);">最大クロック</dt>
@@ -305,9 +340,18 @@ const chipJsonLd = {
           border: 1px solid var(--color-border);
         " class="reveal">
           <h3 style="font-size: 13px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">GPU</h3>
-          <div style="margin-bottom: 20px;">
-            <div style={`font-size: 48px; font-weight: 800; color: ${chip.color}; letter-spacing: -2px; line-height: 1;`}>{chip.gpu.maxCores ?? chip.gpu.cores}</div>
-            <div style="font-size: 14px; color: var(--color-text-secondary);">コア</div>
+          <div style="margin-bottom: 16px;">
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+              <div style={`font-size: 48px; font-weight: 800; color: ${chip.color}; letter-spacing: -2px; line-height: 1;`}>{chip.gpu.maxCores ?? chip.gpu.cores}</div>
+              <div>
+                <div style="font-size: 13px; color: var(--color-text-secondary);">コア</div>
+                <div style={`font-size: 11px; font-weight: 700; color: ${chip.color}; background: ${chip.color}18; padding: 1px 6px; border-radius: 3px; margin-top: 2px;`}>{gpuCorePct}%</div>
+              </div>
+            </div>
+            <!-- シリーズ内コア数バー -->
+            <div style="height: 6px; background: var(--color-border); border-radius: 3px; overflow: hidden; margin-bottom: 16px;">
+              <div style={`width: ${gpuCorePct}%; height: 100%; background: linear-gradient(90deg, ${chip.color}60, ${chip.color}); border-radius: 3px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);`}></div>
+            </div>
           </div>
           <div style="display: flex; flex-wrap: wrap; gap: 6px;">
             {chip.gpu.features.map(f => (

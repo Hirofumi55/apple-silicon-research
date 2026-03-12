@@ -12,6 +12,8 @@ const maxGB6Single = Math.max(...mChips.map(c => c.benchmarks.geekbench6SingleCo
 const maxGB6Multi  = Math.max(...mChips.map(c => c.benchmarks.geekbench6MultiCore ?? 0));
 const maxBandwidth = Math.max(...mChips.map(c => c.memory.bandwidthGBs));
 const maxTops      = Math.max(...mChips.map(c => c.neuralEngine.tops));
+const maxCpuCores  = Math.max(...mChips.map(c => c.cpu.totalCores));
+const maxGpuCores  = Math.max(...mChips.map(c => c.gpu.maxCores ?? c.gpu.cores));
 
 // 世代グループ
 const generations = [
@@ -153,13 +155,38 @@ const mSeriesJsonLd = {
                   </a>
                 </td>
                 <td style="padding: 14px 16px; text-align: center; color: var(--color-text-secondary); white-space: nowrap;">{chip.processNode}</td>
-                <td style="padding: 14px 16px; text-align: center;">
-                  <span style="font-weight: 600; color: var(--color-text);">{chip.cpu.totalCores}</span>
-                  <span style="font-size: 11px; color: var(--color-text-secondary);"> コア</span>
+                <td style="padding: 10px 16px; text-align: center;">
+                  {(() => {
+                    const pct = Math.round((chip.cpu.totalCores / maxCpuCores) * 100);
+                    return (
+                      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                        <div>
+                          <span style={`font-weight: 600; color: ${chip.color};`}>{chip.cpu.totalCores}</span>
+                          <span style="font-size: 11px; color: var(--color-text-secondary);"> コア</span>
+                        </div>
+                        <div style="width: 56px; height: 4px; background: var(--color-border); border-radius: 2px; overflow: hidden;">
+                          <div style={`width: ${pct}%; height: 100%; background: ${chip.color}; border-radius: 2px;`}></div>
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </td>
-                <td style="padding: 14px 16px; text-align: center;">
-                  <span style="font-weight: 600; color: var(--color-text);">{chip.gpu.maxCores ?? chip.gpu.cores}</span>
-                  <span style="font-size: 11px; color: var(--color-text-secondary);"> コア</span>
+                <td style="padding: 10px 16px; text-align: center;">
+                  {(() => {
+                    const gpuCores = chip.gpu.maxCores ?? chip.gpu.cores;
+                    const pct = Math.round((gpuCores / maxGpuCores) * 100);
+                    return (
+                      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                        <div>
+                          <span style={`font-weight: 600; color: ${chip.color};`}>{gpuCores}</span>
+                          <span style="font-size: 11px; color: var(--color-text-secondary);"> コア</span>
+                        </div>
+                        <div style="width: 56px; height: 4px; background: var(--color-border); border-radius: 2px; overflow: hidden;">
+                          <div style={`width: ${pct}%; height: 100%; background: ${chip.color}; border-radius: 2px;`}></div>
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </td>
                 <td style="padding: 14px 16px; text-align: center;">
                   <span style="font-weight: 600; color: var(--color-text);">{chip.neuralEngine.tops}</span>

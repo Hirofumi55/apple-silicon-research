@@ -3,9 +3,12 @@ import type { ChipSpec } from '../../types/chip';
 
 interface Props {
   chip: ChipSpec;
+  maxBenchmark?: number;
+  maxCpuCores?: number;
+  maxGpuCores?: number;
 }
 
-const { chip } = Astro.props;
+const { chip, maxBenchmark, maxCpuCores, maxGpuCores } = Astro.props;
 
 // ベンチマーク表示用: Geekbench6マルチコアを優先
 const benchmark = chip.benchmarks.geekbench6MultiCore
@@ -15,6 +18,11 @@ const benchmarkLabel = chip.benchmarks.geekbench6MultiCore
   : 'AnTuTu';
 
 const seriesLabel = chip.series === 'm' ? 'Mac' : 'iPhone/iPad';
+
+const cpuPct = maxCpuCores ? Math.round((chip.cpu.totalCores / maxCpuCores) * 100) : null;
+const gpuCores = chip.gpu.maxCores ?? chip.gpu.cores;
+const gpuPct = maxGpuCores ? Math.round((gpuCores / maxGpuCores) * 100) : null;
+const benchPct = (maxBenchmark && benchmark) ? Math.round((benchmark / maxBenchmark) * 100) : null;
 ---
 
 <a
@@ -94,8 +102,13 @@ const seriesLabel = chip.series === 'm' ? 'Mac' : 'iPhone/iPad';
       padding: 10px;
     ">
       <div style="font-size: 10px; color: var(--color-text-secondary); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px;">CPU</div>
-      <div style="font-size: 16px; font-weight: 700; color: var(--color-text);">{chip.cpu.totalCores}</div>
+      <div style={`font-size: 16px; font-weight: 700; color: ${cpuPct ? chip.color : 'var(--color-text)'};`}>{chip.cpu.totalCores}</div>
       <div style="font-size: 10px; color: var(--color-text-secondary);">コア</div>
+      {cpuPct && (
+        <div style="margin-top: 6px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;">
+          <div style={`width: ${cpuPct}%; height: 100%; background: ${chip.color}; border-radius: 2px;`}></div>
+        </div>
+      )}
     </div>
     <div style="
       background: rgba(255,255,255,0.04);
@@ -103,8 +116,13 @@ const seriesLabel = chip.series === 'm' ? 'Mac' : 'iPhone/iPad';
       padding: 10px;
     ">
       <div style="font-size: 10px; color: var(--color-text-secondary); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px;">GPU</div>
-      <div style="font-size: 16px; font-weight: 700; color: var(--color-text);">{chip.gpu.maxCores ?? chip.gpu.cores}</div>
+      <div style={`font-size: 16px; font-weight: 700; color: ${gpuPct ? chip.color : 'var(--color-text)'};`}>{gpuCores}</div>
       <div style="font-size: 10px; color: var(--color-text-secondary);">コア</div>
+      {gpuPct && (
+        <div style="margin-top: 6px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;">
+          <div style={`width: ${gpuPct}%; height: 100%; background: ${chip.color}; border-radius: 2px;`}></div>
+        </div>
+      )}
     </div>
     <div style="
       background: rgba(255,255,255,0.04);
@@ -128,19 +146,26 @@ const seriesLabel = chip.series === 'm' ? 'Mac' : 'iPhone/iPad';
   <!-- ベンチマーク -->
   {benchmark && (
     <div style="
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       padding: 10px 12px;
       background: rgba(255,255,255,0.03);
       border-radius: 8px;
       border: 1px solid var(--color-border);
       position: relative;
     ">
-      <span style="font-size: 11px; color: var(--color-text-secondary);">{benchmarkLabel}</span>
-      <span style={`font-size: 15px; font-weight: 700; color: ${chip.color};`}>
-        {benchmark.toLocaleString('ja-JP')}
-      </span>
+      <div style={`display: flex; align-items: center; justify-content: space-between; margin-bottom: ${benchPct ? '6px' : '0'};`}>
+        <span style="font-size: 11px; color: var(--color-text-secondary);">{benchmarkLabel}</span>
+        <div style="display: flex; align-items: baseline; gap: 6px;">
+          <span style={`font-size: 15px; font-weight: 700; color: ${chip.color};`}>
+            {benchmarkLabel === 'AnTuTu' ? `${(benchmark / 1000000).toFixed(1)}M` : benchmark.toLocaleString('ja-JP')}
+          </span>
+          {benchPct && <span style={`font-size: 10px; font-weight: 600; color: ${chip.color}; background: ${chip.color}18; padding: 1px 5px; border-radius: 3px;`}>{benchPct}%</span>}
+        </div>
+      </div>
+      {benchPct && (
+        <div style="height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;">
+          <div style={`width: ${benchPct}%; height: 100%; background: linear-gradient(90deg, ${chip.color}80, ${chip.color}); border-radius: 2px;`}></div>
+        </div>
+      )}
     </div>
   )}
 
